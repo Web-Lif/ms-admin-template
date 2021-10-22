@@ -27,7 +27,7 @@ export default {
         layout: '/layouts'
     },
     plugins: [
-        new FastpackPluginBabelImport([{"libraryName": "antd", "style": true}]),
+        new FastpackPluginBabelImport([{"libraryName": "antd",  "style": true, libraryDirectory: 'es' }]),
         new FastpackPluginLessLoader({
             lessOptions: {
                 javascriptEnabled: true,

@@ -5,7 +5,7 @@
     "version": "0.0.1-canary",
     "license": "MIT",
     "scripts": {
-        "start": "SpeedMeasure=human fastpack dev",
+        "start": "fastpack dev",
         "build": "fastpack build",
         "lint:script": "eslint src --ext .js,.jsx,.ts,.tsx",
         "test": "jest"
