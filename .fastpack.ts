@@ -19,8 +19,6 @@ export default {
         paths: [
             '/',
             '/User/Login',
-            '/User/test',
-            '/User/Logout'
         ],
         notFound: '/components/NotFound',
         // loading: '/components/Loading',

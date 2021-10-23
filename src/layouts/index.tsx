@@ -1,8 +1,18 @@
 import React from 'react'
+import { useLocation, useHistory } from 'react-router-dom'
 import BasicLayout from './BasicLayout'
+import { requestIgnoreList, checkLoginStatus } from '../app'
 
-import { useIgnoreLayout } from '../app'
 
+export const useIgnoreLayout = () => {
+    const location = useLocation()
+    
+    if (requestIgnoreList().includes(location.pathname)) {
+        return true
+    }
+
+    return false
+}
 
 const Layout: React.FC = ({ children }) => {
 
@@ -12,6 +22,12 @@ const Layout: React.FC = ({ children }) => {
                 {children}
             </>
         )
+    }
+
+    if (!checkLoginStatus()) {
+        const history = useHistory()
+        history.replace('/User/Login')
+        return null
     }
 
     return (

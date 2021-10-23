@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import ProLayout from '@ant-design/pro-layout'
-import { Space, Dropdown, Menu, Badge, Tabs, Card } from 'antd'
+import { Space, Dropdown, Menu, Badge, Tabs } from 'antd'
 import { SettingOutlined, BellOutlined } from '@ant-design/icons'
 
 
 import styles from './styles/layout.mless'
-import { requestLayoutMenu, requestUserInformation, UserInformationType } from '../app'
+import { requestGlobalData, GlobalData } from '../app'
 
 
 
@@ -106,29 +106,28 @@ const BasicLayout: FC = ({ children }) => {
     const [loading, setLoading] = useState<boolean>(true)
     const location = useLocation()
 
-    const [userInfo, setUserInfo] = useState<UserInformationType>({
-        name: '......'
+    const [globalData, setGlobalData] = useState<GlobalData>({
+        name: '',
+        title: '',
+        menus: []
     })
 
     useEffect(() => {
-        requestUserInformation().then((user) => {
-            setUserInfo(user)
+        requestGlobalData().then((user) => {
+            setGlobalData(user)
+            setLoading(false)
         })
     }, [])
 
     return (
         <ProLayout
-            title="ms-template"
+            title={globalData.title}
             location={location}
             fixedHeader
             fixSiderbar
             menu={{
                 loading,
-                request: async () => {
-                    const menus = await requestLayoutMenu()
-                    setLoading(false)
-                    return menus
-                }
+                request: async () => globalData.menus
             }}
             rightContentRender={() => (
                 <Space>
@@ -136,17 +135,22 @@ const BasicLayout: FC = ({ children }) => {
                         count={20}
                     />
                     <UserTopInfo
-                        name={userInfo.name}
+                        name={globalData.name}
                     />
                 </Space>
             )}
-            menuItemRender={(item, dom) => (
-                <Link
-                    to={item.path!}
-                >
-                    {dom}
-                </Link>
-            )}
+            menuItemRender={({ path }, dom) => {
+                if (path) {
+                    return (
+                        <Link
+                            to={path}
+                        >
+                            {dom}
+                        </Link>
+                    )
+                }
+                return dom
+            }}
         >
             {children}
         </ProLayout>
