@@ -1,29 +1,9 @@
-import React, { useState } from 'react'
-import { Button } from 'antd'
-import { useHistory } from 'react-router-dom'
+import React from 'react'
 
-const App = () => {
-    const [count, setCount] = useState<number>(0)
-    const history = useHistory()
-    return (
-        <div className="home">
-            <Button
-                onClick={() => {
-                    setCount(count + 1)
-                }}
-            >
-                点击-次数  {count}
-            </Button>
-
-            <Button
-                onClick={() => {
-                    history.push('/User/Logout')
-                }}
-            >
-                Logout
-            </Button>
-        </div>
-    )
-}
+const App = () => (
+    <>
+            这个是首页信息
+    </>
+)
 
 export default App

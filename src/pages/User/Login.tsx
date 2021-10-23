@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Input, Tabs, Button, Typography, Checkbox } from 'antd'
 import { useHistory } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
@@ -9,13 +9,16 @@ import styles from './styles/login.mless'
 const Login = () => {
     const history = useHistory()
 
+    const [loading, setLoading] = useState<boolean>(false)
     useEffect(() => {
         localStorage.clear()
     }, [])
 
     const onFinishLogin = (values: any) => {
+        setLoading(true)
         localStorage.setItem('ms-token', JSON.stringify(values))
         history.replace('/')
+        setLoading(false)
     }
     return (
         <div
@@ -90,6 +93,7 @@ const Login = () => {
                                     htmlType="submit"
                                     block
                                     size="large"
+                                    loading={loading}
                                 >
                                     登录
                                 </Button>
