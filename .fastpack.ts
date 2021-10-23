@@ -22,7 +22,7 @@ export default {
             '/User/test',
             '/User/Logout'
         ],
-        // notFound: '/components/NotFound',
+        notFound: '/components/NotFound',
         // loading: '/components/Loading',
         layout: '/layouts'
     },

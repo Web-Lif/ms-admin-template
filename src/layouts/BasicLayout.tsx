@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import ProLayout from '@ant-design/pro-layout'
 import { Space, Dropdown, Menu, Badge, Tabs } from 'antd'
 import { SettingOutlined, BellOutlined } from '@ant-design/icons'
@@ -128,6 +128,13 @@ const BasicLayout: FC = ({ children }) => {
                         name={userInfo.name}
                     />
                 </Space>
+            )}
+            menuItemRender={(item, dom) => (
+                <Link
+                    to={item.path!}
+                >
+                    {dom}
+                </Link>
             )}
         >
             {children}
