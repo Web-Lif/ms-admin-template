@@ -25,7 +25,11 @@ const UserTopInfo: FC<UserTopInfoProps> = ({
                     key="logout"
                     icon={ <SettingOutlined />}
                 >
-                    退出登录
+                    <Link
+                        to="/User/Login"
+                    >
+                        退出登录
+                    </Link>
                 </Menu.Item>
             </Menu>
         )}
