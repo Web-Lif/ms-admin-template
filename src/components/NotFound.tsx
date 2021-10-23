@@ -1,7 +1,11 @@
 import React from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 
-export default () => {
+const NotFound: React.FC<RouteComponentProps> = ({
+    location
+}) => {
     return (
-        <div> 404 这个路径不存在 </div>
+        <div> 404 这个{location.pathname}路径不存在 </div>
     )
 }
+export default NotFound
