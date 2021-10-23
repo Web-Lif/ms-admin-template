@@ -26,7 +26,7 @@ body {
 }
 
 .login {
-    background-image: url(/public/LoginBackground.svg);
+    background-image: url(./assets/LoginBackground.svg);
     background-repeat: no-repeat;
     background-position: center 110px;
     background-size: 100%;
