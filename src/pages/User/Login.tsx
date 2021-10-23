@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, Input, Tabs, Button, Typography, Checkbox } from 'antd'
 import { useHistory } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
@@ -8,6 +8,11 @@ import styles from './styles/login.mless'
 
 const Login = () => {
     const history = useHistory()
+
+    useEffect(() => {
+        localStorage.clear()
+    }, [])
+
     const onFinishLogin = (values: any) => {
         localStorage.setItem('ms-token', JSON.stringify(values))
         history.replace('/')
