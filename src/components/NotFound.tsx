@@ -1,11 +1,10 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
+import styles from './styles/notfound.mless'
 
-const NotFound: React.FC<RouteComponentProps> = ({
-    location
-}) => {
-    return (
-        <div> 404 这个{location.pathname}路径不存在 </div>
-    )
-}
+const NotFound: React.FC<RouteComponentProps> = () => (
+    <div
+        className={styles.notfound}
+    />
+)
 export default NotFound
