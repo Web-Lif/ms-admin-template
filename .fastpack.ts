@@ -21,7 +21,7 @@ export default {
             '/User/Login',
         ],
         notFound: '/components/NotFound',
-        // loading: '/components/Loading',
+        loading: '/components/Loading',
         layout: '/layouts'
     },
     plugins: [
