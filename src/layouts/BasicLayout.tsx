@@ -1,9 +1,10 @@
-import React, { FC, useState, Suspense } from 'react'
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { FC, useState, Suspense, useRef } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
 import { Space, Dropdown, Menu, Badge, Tabs } from 'antd'
-import { SettingOutlined, BellOutlined } from '@ant-design/icons'
-
+import { SettingOutlined, BellOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined } from '@ant-design/icons'
+import LoadingBar from 'react-top-loading-bar'
 
 import NotFound from '../components/NotFound'
 import { requestGlobalData, GlobalData, config } from '../app'
@@ -41,6 +42,8 @@ const UserTopInfo: FC<UserTopInfoProps> = ({
 )
 
 
+
+
 interface NotificationProps {
     count: number
 }
@@ -74,6 +77,9 @@ const NotificationBody = () => (
     </>
 )
 
+
+
+
 const Notification: FC<NotificationProps> = ({
     count
 }) => {
@@ -104,6 +110,15 @@ const Notification: FC<NotificationProps> = ({
     )
 }
 
+const findCurrentTabIndex = (tabs: MenuDataItem[], activeKey: string) => tabs.findIndex((ele) => {
+    const key = ele.key || ele.path
+    if (key === activeKey) {
+        return true
+    }
+    return false
+})
+
+
 const BasicLayout: FC = ({ children }) => {
 
     const location = useLocation()
@@ -119,22 +134,29 @@ const BasicLayout: FC = ({ children }) => {
         name: '首页',
         closable: false
     }])
-    const [tabActiveKey, setActiveKey] = useState<string>()
+    const [tabActiveKey, setActiveKey] = useState<string>('/')
+    const [reload, setReload]  =useState<{
+        key: string,
+        count: number
+    }>()
+
+    const loadingRef = useRef<any>(null)
 
     const renderChildren = () => {
         if (config.tabs === 'multi') {
             const renderBodyTabPane = () => tabs.map(tab => {
                 const router = (window as any).g_routers.find((ele: any) => ele.path === tab.path)
                 const DynamicComponent = router?.component || NotFound
+                const key = (tab.key || tab.path) || ''
                 return (
                     <Tabs.TabPane
                         tab={tab.name}
-                        key={`ms-tab-body-${tab.key || tab.path}`}
+                        key={tab.key || tab.path}
                         closable={tab.closable}
                         forceRender
                     >
                         <Suspense fallback={<Loading />}>
-                            <DynamicComponent />
+                            <DynamicComponent key={reload?.key === key ? reload.count : undefined} />
                         </Suspense>
                     </Tabs.TabPane>
                 )
@@ -142,7 +164,7 @@ const BasicLayout: FC = ({ children }) => {
             return (
                 <Tabs
                     className={styles.tabsHideNav}
-                    activeKey={`ms-tab-body-${tabActiveKey}`}
+                    activeKey={tabActiveKey}
                 >
                     {renderBodyTabPane()}
                 </Tabs>
@@ -160,125 +182,190 @@ const BasicLayout: FC = ({ children }) => {
         return location
     }
 
-
     return (
-        <ProLayout
-            title={globalData.title}
-            layout={config.layout}
-            navTheme={config.navTheme}
-            headerTheme={config.headerTheme}
-            location={getLocation()}
-            fixedHeader
-            fixSiderbar
-            menu={{
-                request: async () => {
-                    const data = await requestGlobalData()
-                    setGlobalData(data)
-                    return data.menus
-                }
-            }}
-            headerContentRender={() => {
-                if (config.tabs === 'multi') {
-                    return (
-                        <Tabs
-                            type="editable-card"
-                            hideAdd
-                            className={styles.tabsNavTop}
-                            activeKey={`ms-tab-header-${tabActiveKey}`}
-                            onEdit={(e, action) => {
-                                if (action === 'remove') {
-                                    const index = tabs.findIndex((ele) => {
-                                        const key = ele.key || ele.path
-                                        if (key === tabActiveKey) {
-                                            return true
-                                        }
-                                        return false
-                                    })
-                                    if (index !== -1) {
-                                        tabs.splice(index, 1)
-                                        setTabs([
-                                            ...tabs
-                                        ])
-                                        let nextActiveKey;
-                                        if (tabs.length > 0) {
-                                            const tab = tabs[tabs.length - 1]
-                                            nextActiveKey = tab.key || tab.path 
-                                        }
-                                        setActiveKey(nextActiveKey)
-                                    }
-        
-                                }
-                            }}
-                            onChange={(key) => {
-                                setActiveKey(key.replace('ms-tab-header-', ''))
-                            }}
-                        >
-                            {tabs.map(tab => (
-                                <Tabs.TabPane tab={tab.name} key={`ms-tab-header-${tab.key || tab.path}`} closable={tab.closable} />
-                            ))}
-                        </Tabs>
-                    )
-                }
-                return null
-            }}
-            rightContentRender={() => (
-                <Space>
-                    <Notification
-                        count={20}
-                    />
-                    <UserTopInfo
-                        name={globalData.name}
-                    />
-                </Space>
-            )}
-            menuItemRender={(item, dom) => {
-                const { path } = item
-                if (path) {
-                    if (config.tabs === 'single') {
-                        return (
-                            <Link
-                                to={path}
-                            >
-                                {dom}
-                            </Link>
-                        )
+        <>
+            <LoadingBar ref={loadingRef}/>
+            <ProLayout
+                title={globalData.title}
+                layout={config.layout}
+                navTheme={config.navTheme}
+                headerTheme={config.headerTheme}
+                location={getLocation()}
+                fixedHeader
+                fixSiderbar
+                menu={{
+                    request: async () => {
+                        const data = await requestGlobalData()
+                        setGlobalData(data)
+                        return data.menus
                     }
-
+                }}
+                headerContentRender={() => {
                     if (config.tabs === 'multi') {
-                        const onClick = () => {
-                            const activeKey = item.key || item.path
-                            const index = tabs.findIndex(ele => {
-                                const key = ele.key || ele.path
-                                if (activeKey === key) {
-                                    return true
-                                }
-                                return false
-                            })
-                            if (index === -1) {
-                                setTabs([
-                                    ...tabs,
-                                    item
-                                ])
-                            }
-                            setActiveKey(item.key)
-                        }
-                        return (
-                            <div
-                                role = "link" 
-                                aria-hidden="true"
-                                onClick={onClick}
+                        const renderDropdownNode = (node: any) => (
+                            <Dropdown
+                                overlay={(
+                                    <Menu>
+                                        <Menu.Item
+                                            key="reload"
+                                            icon={<SyncOutlined />}
+                                            onClick={() => {
+                                                loadingRef.current?.continuousStart()
+                                                let number = 0
+                                                if (reload?.key === node.key) {
+                                                    number += (reload?.count || 0) + 1
+                                                }
+                                                setReload({
+                                                    key: node.key,
+                                                    count: number
+                                                })
+                                                setTimeout(() => {
+                                                    loadingRef.current?.complete()
+                                                }, 0);
+                                            }}
+                                        >
+                                            重新加载
+                                        </Menu.Item>
+                                        <Menu.Item
+                                            key="closeOther"
+                                            icon={<CloseCircleOutlined />}
+                                            onClick={() => {
+                                                const newTabs = tabs.filter(ele => {
+                                                    const key = ele.key || ele.path
+                                                    if (['/', node.key].includes(key)) {
+                                                        return true
+                                                    }
+                                                    return false
+                                                })
+                                                setActiveKey(node.key)
+                                                setTabs(newTabs)
+                                            }}
+                                        >
+                                                关闭其他标签页
+                                        </Menu.Item>
+                                        <Menu.Item
+                                            key="closeRight"
+                                            icon={<ScissorOutlined />}
+                                            onClick={() => {
+                                                const index = findCurrentTabIndex(tabs, node.key)
+                                                const newTabs = tabs.slice(0, index + 1)
+                                                if (findCurrentTabIndex(newTabs, tabActiveKey) === -1) {
+                                                    setActiveKey(node.key)
+                                                }
+                                                setTabs(newTabs)
+                                            }}
+                                        >
+                                                关闭右侧标签页
+                                        </Menu.Item>
+                                    </Menu>
+                                )}
+                                trigger={['contextMenu']}
                             >
-                                {dom}
-                            </div>
+                                {node}
+                            </Dropdown>
                         )
-                        
+                        return (
+                            <Tabs
+                                type="editable-card"
+                                hideAdd
+                                className={styles.tabsNavTop}
+                                activeKey={tabActiveKey}
+                                renderTabBar={(props, DefaultTabBar) => (
+                                    <DefaultTabBar {...props} >
+                                        {(node: any) => (
+                                            renderDropdownNode(node)
+                                        )}
+                                    </DefaultTabBar>
+                                )}
+                                onEdit={(e, action) => {
+                                    if (action === 'remove') {
+                                        const index = findCurrentTabIndex(tabs, tabActiveKey)
+                                        if (index !== -1) {
+                                            tabs.splice(index, 1)
+                                            setTabs([
+                                                ...tabs
+                                            ])
+                                            let nextActiveKey;
+                                            if (tabs.length > 0) {
+                                                const tab = tabs[tabs.length - 1]
+                                                nextActiveKey = tab.key || tab.path 
+                                            }
+                                            setActiveKey(nextActiveKey || '/')
+                                        }
+            
+                                    }
+                                }}
+                                onChange={(key) => {
+                                    setActiveKey(key)
+                                }}
+                            >
+                                {tabs.map(tab => (
+                                    <Tabs.TabPane tab={tab.name} key={tab.key || tab.path} closable={tab.closable} />
+                                ))}
+                            </Tabs>
+                        )
                     }
-                }
-                return dom
-            }}
-        >
-            {renderChildren()}
-        </ProLayout>
+                    return null
+                }}
+                rightContentRender={() => (
+                    <Space>
+                        <Notification
+                            count={20}
+                        />
+                        <UserTopInfo
+                            name={globalData.name}
+                        />
+                    </Space>
+                )}
+                menuItemRender={(item, dom) => {
+                    const { path } = item
+                    if (path) {
+                        if (config.tabs === 'single') {
+                            return (
+                                <Link
+                                    to={path}
+                                >
+                                    {dom}
+                                </Link>
+                            )
+                        }
+
+                        if (config.tabs === 'multi') {
+                            const onClick = () => {
+                                const activeKey = item.key || item.path
+                                const index = tabs.findIndex(ele => {
+                                    const key = ele.key || ele.path
+                                    if (activeKey === key) {
+                                        return true
+                                    }
+                                    return false
+                                })
+                                if (index === -1) {
+                                    setTabs([
+                                        ...tabs,
+                                        item
+                                    ])
+                                }
+                                setActiveKey(activeKey!)
+                            }
+                            return (
+                                <div
+                                    role = "link" 
+                                    aria-hidden="true"
+                                    onClick={onClick}
+                                >
+                                    {dom}
+                                </div>
+                            )
+                            
+                        }
+                    }
+                    return dom
+                }}
+            >
+                {renderChildren()}
+            </ProLayout>
+        </>
     )
 }
 
