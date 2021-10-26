@@ -27,22 +27,18 @@ export const requestGlobalData = async (): Promise<GlobalData> => ({
             name: 'welcome',
             children: [
                 {
-                    path: '/welcome',
+                    path: '/one/welcome',
                     name: 'one',
                     children: [
                         {
-                            path: '/welcome/welcome',
+                            path: '/welcome',
                             name: 'two',
                             exact: true,
                         },
                     ],
                 },
             ],
-        },
-        {
-            path: '/demo',
-            name: 'demo',
-        },
+        }
     ]
 })
 
@@ -54,4 +50,22 @@ export const checkLoginStatus = () => {
         return true
     }
     return false
+}
+
+export type Config = {
+    // 菜单的布局方式
+    layout: 'side' | 'top'| 'mix'
+    // 导航的主题，side 和 mix 模式下是左侧菜单的主题，top 模式下是顶部菜单
+    navTheme: 'light' | 'dark'
+    // 顶部导航的主题，mix 模式生效
+    headerTheme: 'light' | 'dark'
+    // 标签页模式 
+    tabs: 'single' | 'multi'
+}
+
+export const config: Config = {
+    layout: 'side',
+    navTheme: 'dark',
+    headerTheme: 'dark',
+    tabs: 'multi'
 }

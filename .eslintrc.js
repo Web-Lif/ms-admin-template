@@ -25,6 +25,7 @@ module.exports = {
     rules: {
         'indent': ['error', 4],
         'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
+        'react/require-default-props': 'off',
         'import/no-extraneous-dependencies': 0,
         'import/extensions': [
             'error',
@@ -42,6 +43,7 @@ module.exports = {
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': ['error', {'argsIgnorePattern': '^_'}],
         'no-shadow': 'off',
+        
         '@typescript-eslint/no-shadow': 'error'
     }
 }

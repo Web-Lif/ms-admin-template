@@ -19,6 +19,7 @@ export default {
         paths: [
             '/',
             '/User/Login',
+            '/welcome'
         ],
         notFound: '/components/NotFound',
         loading: '/components/Loading',
