@@ -6,7 +6,7 @@ const App = () => {
     }, [])
     return (
         <>
-                这个是首页信息 <input />
+            这个是首页信息 <input /> 
         </>
     )
 }
