@@ -71,3 +71,11 @@
         padding-top: 5px;
     }
 }
+
+.proLayout {
+    :global(.ant-pro-global-header-layout-side) {
+        > div {
+            min-width: 0;
+        }
+    }
+}
