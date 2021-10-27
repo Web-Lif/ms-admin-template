@@ -1,14 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 
-const App = () => {
+import { RouteComponentProps } from '@/types'
+
+const App: FC<RouteComponentProps> = ({
+    tabs
+}) => {
     useEffect(() => {
-        console.log("这是我的第一次加载......")
-    }, [])
+        console.log(JSON.stringify(tabs.params), tabs.status)
+    }, [tabs.status])
     return (
         <>
-            这个是首页信息 <input /> 
+            这个是首页信息  {JSON.stringify(tabs.params)}
         </>
     )
+    
 }
 
 export default App

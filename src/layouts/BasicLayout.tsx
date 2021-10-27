@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { FC, useState, Suspense, useRef } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
@@ -6,6 +5,7 @@ import { Space, Dropdown, Menu, Badge, Tabs } from 'antd'
 import { SettingOutlined, BellOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import LoadingBar from 'react-top-loading-bar'
 
+import { Tabs as TabsProps } from '@/types'
 import NotFound from '../components/NotFound'
 import { requestGlobalData, GlobalData, config } from '../app'
 import Loading from '../components/Loading'
@@ -14,7 +14,6 @@ import styles from './styles/layout.mless'
 interface UserTopInfoProps {
     name: string
 }
-
 
 const UserTopInfo: FC<UserTopInfoProps> = ({
     name
@@ -40,9 +39,6 @@ const UserTopInfo: FC<UserTopInfoProps> = ({
         </div>
     </Dropdown>
 )
-
-
-
 
 interface NotificationProps {
     count: number
@@ -76,9 +72,6 @@ const NotificationBody = () => (
         </div>
     </>
 )
-
-
-
 
 const Notification: FC<NotificationProps> = ({
     count
@@ -140,7 +133,53 @@ const BasicLayout: FC = ({ children }) => {
         count: number
     }>()
 
+
     const loadingRef = useRef<any>(null)
+
+    const tabsProps: TabsProps = {
+        open: ({
+            item,
+            activation,
+            params
+        }) => {
+            const key = item.key || item.path
+            setTabs([
+                ...tabs,
+                {
+                    ...item,
+                    params
+                }
+            ])
+            if (activation) {
+                setActiveKey(key!)
+            }
+        },
+        close: ({
+            key,
+            goback
+        }) => {
+            const index = findCurrentTabIndex(tabs, key)
+            if (index !== -1) {
+                tabs.splice(index, 1)
+                setTabs([
+                    ...tabs
+                ])
+            }
+            if (goback) {
+                setActiveKey(goback)
+            }
+        },
+        active: ({
+            key,
+            params
+        }) => {
+            const index = findCurrentTabIndex(tabs, key)
+            tabs[index].params = params
+            setTabs([...tabs])
+            setActiveKey(key)
+        },
+        status: 'passive'
+    }
 
     const renderChildren = () => {
         if (config.tabs === 'multi') {
@@ -148,6 +187,13 @@ const BasicLayout: FC = ({ children }) => {
                 const router = (window as any).g_routers.find((ele: any) => ele.path === tab.path)
                 const DynamicComponent = router?.component || NotFound
                 const key = (tab.key || tab.path) || ''
+                
+                if (key === tabActiveKey) {
+                    tabsProps.status = 'active'
+                } else {
+                    tabsProps.status = 'passive'
+                }
+
                 return (
                     <Tabs.TabPane
                         tab={tab.name}
@@ -156,7 +202,13 @@ const BasicLayout: FC = ({ children }) => {
                         forceRender
                     >
                         <Suspense fallback={<Loading />}>
-                            <DynamicComponent key={reload?.key === key ? reload.count : undefined} />
+                            <DynamicComponent
+                                key={reload?.key === key ? reload.count : undefined}
+                                tabs={{
+                                    ...tabsProps,
+                                    params: tab.params
+                                }}
+                            />
                         </Suspense>
                     </Tabs.TabPane>
                 )
@@ -186,6 +238,7 @@ const BasicLayout: FC = ({ children }) => {
         <>
             <LoadingBar ref={loadingRef}/>
             <ProLayout
+                className={styles.proLayout}
                 title={globalData.title}
                 layout={config.layout}
                 navTheme={config.navTheme}
@@ -271,6 +324,7 @@ const BasicLayout: FC = ({ children }) => {
                                 className={styles.tabsNavTop}
                                 activeKey={tabActiveKey}
                                 renderTabBar={(props, DefaultTabBar) => (
+                                    // eslint-disable-next-line react/jsx-props-no-spreading
                                     <DefaultTabBar {...props} >
                                         {(node: any) => (
                                             renderDropdownNode(node)
@@ -296,6 +350,7 @@ const BasicLayout: FC = ({ children }) => {
                                     }
                                 }}
                                 onChange={(key) => {
+                                    setTabs([...tabs])
                                     setActiveKey(key)
                                 }}
                             >
