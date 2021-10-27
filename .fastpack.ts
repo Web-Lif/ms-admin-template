@@ -2,13 +2,16 @@ import FastpackPluginBabelImport from '@weblif/plugin-babel-import'
 import FastpackPluginLessLoader from '@weblif/plugin-less-loader'
 // @ts-ignore
 import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin'
 
+import { resolve } from 'path'
 
 /**
  * 扩展 Webpack 的信息
  */
 class WebpackChainPlugin {
     after(webpack: any) {
+        webpack.plugin('fastpack/ESLintPlugin').use(ESLintPlugin)
         webpack.plugin('fastpack/AntdDayjsWebpackPlugin').use(AntdDayjsWebpackPlugin)
     }
 }

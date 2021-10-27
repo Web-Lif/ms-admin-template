@@ -36,14 +36,15 @@ module.exports = {
                 jsx: 'never',
                 ts: 'never',
                 tsx: 'never',
+                '': 'never'
             },
         ],
+        'import/no-unresolved': [2, { ignore: ['^@/.*$'] }],
         'no-use-before-define': 'off',
         '@typescript-eslint/no-use-before-define': ['error'],
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': ['error', {'argsIgnorePattern': '^_'}],
         'no-shadow': 'off',
-        
         '@typescript-eslint/no-shadow': 'error'
     }
 }
