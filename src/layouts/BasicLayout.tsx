@@ -6,11 +6,13 @@ import { SettingOutlined, BellOutlined, SyncOutlined, ScissorOutlined, CloseCirc
 import LoadingBar from 'react-top-loading-bar'
 import pinyin from 'pinyin'
 
-import { Tabs as TabsProps } from '@/types'
+
 import NotFound from '../components/NotFound'
 import { requestGlobalData, GlobalData, config } from '../app'
 import Loading from '../components/Loading'
 import styles from './styles/layout.mless'
+import { Tabs as TabsProps } from '@/types'
+import { setConfigParams, getConfigParams } from '@/utils/config'
 
 interface UserTopInfoProps {
     name: string
@@ -152,6 +154,7 @@ const BasicLayout: FC = ({ children }) => {
     }])
 
     const [tabActiveKey, setActiveKey] = useState<string>('/')
+
     const [reload, setReload]  =useState<{
         key: string,
         count: number
@@ -177,18 +180,41 @@ const BasicLayout: FC = ({ children }) => {
     const [searchItems, setSearchItems] = useState<SearchItem[]>([])
 
     useEffect(() => {
+        getConfigParams('ms-tabs').then((data: any[]) => {
+            if (data.length > 0) {
+                setTabs(data)
+            }
+        })
+        getConfigParams('ms-active-key').then((data: string) => {
+            if (data) {
+                setActiveKey(data)
+            }
+        })
+
         const onKeyup = (e: KeyboardEvent) => {
             if (e.key === '/') {
                 e.stopPropagation()
                 searchRef.current?.focus()
             }
         }
+
         window.addEventListener('keyup', onKeyup)
 
         return () => {
             window.removeEventListener('keyup', onKeyup)
         }
     }, [])
+
+    useEffect(() => {
+        setConfigParams('ms-tabs', tabs.map((ele: any) => ({
+            ...ele,
+            onClick: undefined
+        })))
+    }, [tabs])
+
+    useEffect(() => {
+        setConfigParams('ms-active-key', tabActiveKey)
+    }, [tabActiveKey])
 
     const tabsProps: TabsProps = {
         open: ({
@@ -441,10 +467,10 @@ const BasicLayout: FC = ({ children }) => {
                         <Select
                             ref={searchRef}
                             showSearch
+                            value=""
                             style={{
                                 width: 250
                             }}
-                            autoFocus
                             filterOption={(input, option) => {
                                 const initials = pinyin(option?.children[0], {
                                     style: pinyin.STYLE_FIRST_LETTER
