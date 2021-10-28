@@ -139,7 +139,7 @@ const BasicLayout: FC = ({ children }) => {
     const tabsProps: TabsProps = {
         open: ({
             item,
-            activation = true,
+            active = true,
             params
         }) => {
             const key = item.key || item.path
@@ -154,7 +154,7 @@ const BasicLayout: FC = ({ children }) => {
                 ])
             }
 
-            if (activation) {
+            if (active) {
                 setActiveKey(key!)
             }
         },
