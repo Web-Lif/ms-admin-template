@@ -11,7 +11,9 @@ import { resolve } from 'path'
  */
 class WebpackChainPlugin {
     after(webpack: any) {
-        webpack.plugin('fastpack/ESLintPlugin').use(ESLintPlugin)
+        webpack.plugin('fastpack/ESLintPlugin').use(ESLintPlugin, [{
+            extensions: ['.ts', '.tsx', '.js', '.jsx']
+        }])
         webpack.plugin('fastpack/AntdDayjsWebpackPlugin').use(AntdDayjsWebpackPlugin)
     }
 }
