@@ -24,16 +24,15 @@ export const requestGlobalData = async (): Promise<GlobalData> => ({
     menus: [
         {
             path: '/',
-            name: 'welcome',
+            name: '欢迎页面',
             children: [
                 {
                     path: '/one/welcome',
-                    name: 'one',
+                    name: '第一个',
                     children: [
                         {
                             path: '/welcome',
-                            name: 'two',
-                            exact: true,
+                            name: '第二个',
                         },
                     ],
                 },
