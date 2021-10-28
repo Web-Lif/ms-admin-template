@@ -143,13 +143,17 @@ const BasicLayout: FC = ({ children }) => {
             params
         }) => {
             const key = item.key || item.path
-            setTabs([
-                ...tabs,
-                {
-                    ...item,
-                    params
-                }
-            ])
+
+            if (findCurrentTabIndex(tabs, key!) === -1) {
+                setTabs([
+                    ...tabs,
+                    {
+                        ...item,
+                        params
+                    }
+                ])
+            }
+
             if (activation) {
                 setActiveKey(key!)
             }
