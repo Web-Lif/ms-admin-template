@@ -7,11 +7,11 @@ export interface Tabs {
      */
     open: ({
         item,
-        activation,
+        active,
         params
     }: {
         item: MenuDataItem,
-        activation?: boolean,
+        active?: boolean,
         params?: any 
     }) => void
 

@@ -33,7 +33,8 @@ const App: FC<RouteComponentProps> = ({
                         },
                         params: {
                             message: `hello, word New - ${count.current} `
-                        }
+                        },
+                        active: false,
                     })
                 }}
             >

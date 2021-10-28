@@ -5,7 +5,9 @@ import { RouteComponentProps } from '@/types'
 const App: FC<RouteComponentProps> = ({
     tabs
 }) => {
+    
     useEffect(() => {
+        // eslint-disable-next-line no-console
         console.log(JSON.stringify(tabs.params), tabs.status)
     }, [tabs.status])
     return (
