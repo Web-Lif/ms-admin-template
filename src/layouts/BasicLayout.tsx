@@ -1,9 +1,10 @@
-import React, { FC, useState, Suspense, useRef } from 'react'
+import React, { FC, useState, Suspense, useRef, useEffect } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
-import { Space, Dropdown, Menu, Badge, Tabs } from 'antd'
-import { SettingOutlined, BellOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined } from '@ant-design/icons'
+import { Space, Dropdown, Menu, Badge, Tabs, Select, Typography } from 'antd'
+import { SettingOutlined, BellOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import LoadingBar from 'react-top-loading-bar'
+import pinyin from 'pinyin'
 
 import { Tabs as TabsProps } from '@/types'
 import NotFound from '../components/NotFound'
@@ -112,6 +113,28 @@ const findCurrentTabIndex = (tabs: MenuDataItem[], activeKey: string) => tabs.fi
 })
 
 
+const formatMenuFull= (menus: MenuDataItem[], path?: string) => {
+    menus.forEach((menu) => {
+        let realPath = path || '首页'
+        if (/^\/.*/.test(realPath)) {
+            realPath = realPath?.substr(1)
+        }
+        // eslint-disable-next-line no-param-reassign
+        menu.fullName = realPath
+        if (menu.children) {
+            formatMenuFull(menu.children, `${path || ''}/${menu.name}`)
+        }
+    })
+}
+
+interface SearchItem {
+    key: string
+    title: string
+    description: any
+    data?: any
+}
+
+
 const BasicLayout: FC = ({ children }) => {
 
     const location = useLocation()
@@ -127,6 +150,7 @@ const BasicLayout: FC = ({ children }) => {
         name: '首页',
         closable: false
     }])
+
     const [tabActiveKey, setActiveKey] = useState<string>('/')
     const [reload, setReload]  =useState<{
         key: string,
@@ -135,6 +159,36 @@ const BasicLayout: FC = ({ children }) => {
 
 
     const loadingRef = useRef<any>(null)
+    const searchRef = useRef<HTMLDivElement>(null)
+
+
+    const getSearchList = (menuDatas: MenuDataItem[]) => {
+        const data:  MenuDataItem[] = []
+        menuDatas.forEach((ele, index) => {
+            if (ele.children) {
+                data.splice(index, 0, ...getSearchList(ele.children))
+            } else {
+                data.push(ele)
+            }
+        })
+        return data
+    }
+
+    const [searchItems, setSearchItems] = useState<SearchItem[]>([])
+
+    useEffect(() => {
+        const onKeyup = (e: KeyboardEvent) => {
+            if (e.key === '/') {
+                e.stopPropagation()
+                searchRef.current?.focus()
+            }
+        }
+        window.addEventListener('keyup', onKeyup)
+
+        return () => {
+            window.removeEventListener('keyup', onKeyup)
+        }
+    }, [])
 
     const tabsProps: TabsProps = {
         open: ({
@@ -254,9 +308,23 @@ const BasicLayout: FC = ({ children }) => {
                 fixSiderbar
                 menu={{
                     request: async () => {
-                        const data = await requestGlobalData()
-                        setGlobalData(data)
-                        return data.menus
+                        try {
+                            const data = await requestGlobalData()
+                            formatMenuFull(data.menus)
+                            setGlobalData(data)
+                            const items = getSearchList(data.menus).map(ele => ({
+                                key: (ele.path || ele.key) || '',
+                                description: ele.fullName,
+                                title: ele.name || '',
+                                data: ele
+                            }))
+                            setSearchItems(items)
+                            return data.menus
+                        } catch (error) {
+                            // eslint-disable-next-line no-console
+                            console.log(error)
+                            return []
+                        }
                     }
                 }}
                 headerContentRender={() => {
@@ -370,6 +438,46 @@ const BasicLayout: FC = ({ children }) => {
                 }}
                 rightContentRender={() => (
                     <Space>
+                        <Select
+                            ref={searchRef}
+                            showSearch
+                            style={{
+                                width: 250
+                            }}
+                            autoFocus
+                            filterOption={(input, option) => {
+                                const initials = pinyin(option?.children[0], {
+                                    style: pinyin.STYLE_FIRST_LETTER
+                                })
+                                const value = pinyin(input, {
+                                    style: pinyin.STYLE_FIRST_LETTER
+                                })
+
+                                const regexp = new RegExp(`^${value.join('')}.*`)
+                                return regexp.test(initials.join(''))
+                            }}
+                            onSelect={(value) => {
+                                const item = searchItems.find(ele => ele.key === value)
+                                if (item) {
+                                    tabsProps.open({
+                                        item: item.data,
+                                    })
+                                }
+                            }}
+                            suffixIcon={<SearchOutlined />}
+                        >
+                            {searchItems.map(ele => (
+                                <Select.Option
+                                    key={ele.key}
+                                    value={ele.key}
+                                >
+                                    {ele.title} <br />
+                                    <Typography.Text type="secondary">
+                                        {ele.description}
+                                    </Typography.Text>
+                                </Select.Option>
+                            ))}
+                        </Select>
                         <Notification
                             count={20}
                         />
