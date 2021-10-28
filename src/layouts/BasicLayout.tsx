@@ -181,8 +181,10 @@ const BasicLayout: FC = ({ children }) => {
         status: 'passive'
     }
 
+    const isMultiTabs = () => config.tabs === 'multi' && config.layout === 'side'
+
     const renderChildren = () => {
-        if (config.tabs === 'multi') {
+        if (isMultiTabs()) {
             const renderBodyTabPane = () => tabs.map(tab => {
                 const router = (window as any).g_routers.find((ele: any) => ele.path === tab.path)
                 const DynamicComponent = router?.component || NotFound
@@ -226,7 +228,7 @@ const BasicLayout: FC = ({ children }) => {
     }
 
     const getLocation = () => {
-        if (config.tabs === 'multi') {
+        if (isMultiTabs()) {
             return {
                 pathname: tabActiveKey
             }
@@ -254,7 +256,7 @@ const BasicLayout: FC = ({ children }) => {
                     }
                 }}
                 headerContentRender={() => {
-                    if (config.tabs === 'multi') {
+                    if (isMultiTabs()) {
                         const renderDropdownNode = (node: any) => (
                             <Dropdown
                                 overlay={(
@@ -333,7 +335,7 @@ const BasicLayout: FC = ({ children }) => {
                                 )}
                                 onEdit={(e, action) => {
                                     if (action === 'remove') {
-                                        const index = findCurrentTabIndex(tabs, tabActiveKey)
+                                        const index = findCurrentTabIndex(tabs, e as string)
                                         if (index !== -1) {
                                             tabs.splice(index, 1)
                                             setTabs([
@@ -385,7 +387,7 @@ const BasicLayout: FC = ({ children }) => {
                             )
                         }
 
-                        if (config.tabs === 'multi') {
+                        if (isMultiTabs()) {
                             const onClick = () => {
                                 const activeKey = item.key || item.path
                                 const index = tabs.findIndex(ele => {
