@@ -78,7 +78,7 @@ npm run test
 - `components` 项目中自定义的组件信息
 - `app.tsx` 留给用户的扩展点，里面都会配置对应的接口和方法
 
-## app.tsx 配置说明
+## 配置说明
 
 在项目中 `src/app.tsx` 会有很多导出的函数，这些函数需要使用者进行实现，或则进行修改进行扩展功能
 
@@ -109,3 +109,71 @@ npm run test
 - return `Promise<GlobalData>`
 
 请求后端接口，返回当期的菜单信息, 以及对应的人员信息
+
+
+## 多标签页说明
+
+当用户开启多标签页模式的时候，那么就会想子组件传递一个 `tabs` 的属性
+
+`tabs` 有以下信息
+
+- `open` 开启一个新的标签页面
+- `close` 关闭一个标签页面
+- `active` 激活当前标签页面
+- `status` 当期的标签页的状态
+- `params` 传入进来的参数信息
+
+> 见 [src/types.ts](./src/types.ts) 里面的 `RouteComponentProps` 的定义
+
+
+建议采用 `RouteComponentProps` 来定义类型，这样有更好的开发体验
+
+
+```tsx
+import React, { FC, useRef } from 'react'
+import { Button } from 'antd'
+import { RouteComponentProps } from '@/types'
+
+
+const App: FC<RouteComponentProps> = ({
+    tabs
+}) => {
+    const count = useRef<number>(0)
+    return  (
+        <>
+            <Button
+                onClick={() => {
+                    count.current += 1
+                    tabs.active({
+                        key: '/',
+                        params: {
+                            message: `hello, word - ${count.current}`
+                        }
+                    })
+                }}
+            >
+                点击跳转到首页
+            </Button>
+            <Button
+                onClick={() => {
+                    count.current += 1
+                    tabs.open({
+                        item: {
+                            key: `newHome${count.current}`,
+                            path: '/',
+                            name: 'New Home Tab'
+                        },
+                        params: {
+                            message: `hello, word New - ${count.current} `
+                        }
+                    })
+                }}
+            >
+                打开新的首页信息
+            </Button>
+        </>
+    )
+}
+
+export default App
+```
