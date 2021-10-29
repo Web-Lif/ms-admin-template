@@ -29,7 +29,7 @@ export default getFastpackConfig({
         loading: '/components/Loading',
         layout: '/layouts'
     },
-    publicPath: 'ms-template',
+    publicPath: '/ms-template',
     plugins: [
         new FastpackPluginBabelImport([{"libraryName": "antd",  "style": true, libraryDirectory: 'es' }]),
         new FastpackPluginLessLoader({
