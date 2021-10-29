@@ -181,7 +181,7 @@ const BasicLayout: FC = ({ children }) => {
 
     useEffect(() => {
         getConfigParams('ms-tabs').then((data: any[]) => {
-            if (data.length > 0) {
+            if (data?.length > 0) {
                 setTabs(data)
             }
         })
