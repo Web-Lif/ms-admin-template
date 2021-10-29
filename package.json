@@ -28,7 +28,7 @@
         "@types/react": "^17.0.25",
         "@types/react-dom": "^17.0.9",
         "@types/react-router-dom": "^5.3.0",
-        "@weblif/fastpack": "^0.3.10-canary",
+        "@weblif/fastpack": "^0.3.11-canary",
         "@weblif/plugin-babel-import": "^1.0.0",
         "@weblif/plugin-less-loader": "^1.1.17",
         "@weblif/preset-cli": "^0.0.4",
