@@ -1,4 +1,5 @@
 import { MenuDataItem } from '@ant-design/pro-layout'
+import { clearConfigParams } from '@/utils/config'
 
 export type GlobalData = {
     name: string,
@@ -49,6 +50,14 @@ export const checkLoginStatus = () => {
         return true
     }
     return false
+}
+
+/**
+ * 清空配置的数据信息
+ */
+export const clearLoginStatus = () => {
+    localStorage.clear()
+    clearConfigParams()
 }
 
 export type Config = {

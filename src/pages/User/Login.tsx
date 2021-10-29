@@ -1,19 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState,FC } from 'react'
+import React, { useState,FC } from 'react'
 import { Form, Input, Tabs, Button, Typography, Checkbox } from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import { checkLoginStatus } from '@/app'
 
 import styles from './styles/login.mless'
 
 const Login: FC<RouteComponentProps> = ({
     history
 }) => {
-    const [loading, setLoading] = useState<boolean>(false)
+    
+    if (checkLoginStatus()) {
+        history.push('/')
+    }
 
-    useEffect(() => {
-        localStorage.clear()
-    }, [])
+    const [loading, setLoading] = useState<boolean>(false)
 
     const onFinishLogin = (values: any) => {
         setLoading(true)
@@ -21,6 +23,7 @@ const Login: FC<RouteComponentProps> = ({
         setLoading(false)
         history.push('/')
     }
+
     return (
         <div
             className={styles.login}
