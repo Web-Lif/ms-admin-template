@@ -3,8 +3,7 @@ import FastpackPluginLessLoader from '@weblif/plugin-less-loader'
 // @ts-ignore
 import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin'
-
-import { resolve } from 'path'
+import { getFastpackConfig } from '@weblif/fastpack'
 
 /**
  * 扩展 Webpack 的信息
@@ -18,7 +17,7 @@ class WebpackChainPlugin {
     }
 }
 
-export default {
+export default getFastpackConfig({
     title: 'test',
     router: {
         paths: [
@@ -30,6 +29,7 @@ export default {
         loading: '/components/Loading',
         layout: '/layouts'
     },
+    publicPath: 'ms-template',
     plugins: [
         new FastpackPluginBabelImport([{"libraryName": "antd",  "style": true, libraryDirectory: 'es' }]),
         new FastpackPluginLessLoader({
@@ -39,4 +39,4 @@ export default {
         }),
         new WebpackChainPlugin()
     ],
-}
+})
