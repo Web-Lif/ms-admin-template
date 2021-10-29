@@ -1,7 +1,6 @@
 {
     "name": "ms-template",
     "private": true,
-    "author": "",
     "version": "0.0.1-canary",
     "license": "MIT",
     "scripts": {
@@ -28,7 +27,7 @@
         "@types/react": "^17.0.25",
         "@types/react-dom": "^17.0.9",
         "@types/react-router-dom": "^5.3.0",
-        "@weblif/fastpack": "^0.3.11-canary",
+        "@weblif/fastpack": "^0.3.13-canary",
         "@weblif/plugin-babel-import": "^1.0.0",
         "@weblif/plugin-less-loader": "^1.1.17",
         "@weblif/preset-cli": "^0.0.4",

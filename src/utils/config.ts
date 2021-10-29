@@ -20,3 +20,6 @@ export const setConfigParams = async (name: string, value: any) => {
     })
 }
 
+export const clearConfigParams = async () => {
+    await db.table('ms-config').clear()
+}

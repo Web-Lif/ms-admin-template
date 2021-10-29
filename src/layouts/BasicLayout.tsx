@@ -1,5 +1,5 @@
 import React, { FC, useState, Suspense, useRef, useEffect } from 'react'
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, Link, useHistory } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
 import { Space, Dropdown, Menu, Badge, Tabs, Select, Typography } from 'antd'
 import { SettingOutlined, BellOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined } from '@ant-design/icons'
@@ -8,7 +8,7 @@ import pinyin from 'pinyin'
 
 
 import NotFound from '../components/NotFound'
-import { requestGlobalData, GlobalData, config } from '../app'
+import { requestGlobalData, GlobalData, config, clearLoginStatus } from '../app'
 import Loading from '../components/Loading'
 import styles from './styles/layout.mless'
 import { Tabs as TabsProps } from '@/types'
@@ -19,29 +19,38 @@ interface UserTopInfoProps {
 }
 
 const UserTopInfo: FC<UserTopInfoProps> = ({
-    name
-}) => (
-    <Dropdown
-        overlay={(
-            <Menu>
-                <Menu.Item
-                    key="logout"
-                    icon={ <SettingOutlined />}
-                >
-                    <Link
-                        to="/User/Login"
+    name,
+}) => {
+    const history = useHistory()
+
+    return (
+        <Dropdown
+            overlay={(
+                <Menu>
+                    <Menu.Item
+                        key="logout"
+                        icon={ <SettingOutlined />}
                     >
-                        退出登录
-                    </Link>
-                </Menu.Item>
-            </Menu>
-        )}
-    >
-        <div className={styles.userName}>
-            {name}
-        </div>
-    </Dropdown>
-)
+                        <div
+                            role="button"
+                            aria-hidden="true"
+                            onClick={() => {
+                                clearLoginStatus()
+                                history.push('/User/Login')
+                            }}
+                        >
+                            退出登录
+                        </div>
+                    </Menu.Item>
+                </Menu>
+            )}
+        >
+            <div className={styles.userName}>
+                {name}
+            </div>
+        </Dropdown>
+    )
+}
 
 interface NotificationProps {
     count: number
