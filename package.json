@@ -12,7 +12,6 @@
     "dependencies": {
         "@ant-design/icons": "^4.7.0",
         "@ant-design/pro-layout": "^6.26.6",
-        "animejs": "^3.2.1",
         "antd": "^4.16.13",
         "dexie": "^3.0.3",
         "pinyin": "^2.10.2",
@@ -22,7 +21,6 @@
         "react-top-loading-bar": "^2.0.1"
     },
     "devDependencies": {
-        "@types/animejs": "^3.1.4",
         "@types/pinyin": "^2.10.0",
         "@types/react": "^17.0.25",
         "@types/react-dom": "^17.0.9",
