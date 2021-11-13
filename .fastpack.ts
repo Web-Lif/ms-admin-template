@@ -31,7 +31,7 @@ export default getFastpackConfig({
     },
     publicPath: '/ms-template',
     plugins: [
-        new FastpackPluginBabelImport([{"libraryName": "antd",  "style": true, libraryDirectory: 'es' }]),
+        new FastpackPluginBabelImport([{"libraryName": "antd",  "style": true, libraryDirectory: 'es' }] as any),
         new FastpackPluginLessLoader({}),
         new WebpackChainPlugin()
     ],
