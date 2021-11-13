@@ -32,11 +32,7 @@ export default getFastpackConfig({
     publicPath: '/ms-template',
     plugins: [
         new FastpackPluginBabelImport([{"libraryName": "antd",  "style": true, libraryDirectory: 'es' }]),
-        new FastpackPluginLessLoader({
-            lessOptions: {
-                javascriptEnabled: true,
-            }
-        }),
+        new FastpackPluginLessLoader({}),
         new WebpackChainPlugin()
     ],
 })

@@ -328,7 +328,6 @@ const BasicLayout: FC = ({ children }) => {
         }
         return location
     }
-
     return (
         <>
             <LoadingBar ref={loadingRef}/>
@@ -566,6 +565,7 @@ const BasicLayout: FC = ({ children }) => {
                     }
                     return dom
                 }}
+            
             >
                 {renderChildren()}
             </ProLayout>
