@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { checkLoginStatus } from '@/app'
 
-import styles from './styles/login.mless'
+import styles from './styles/login.module.less'
 
 const Login: FC<RouteComponentProps> = ({
     history

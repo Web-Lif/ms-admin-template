@@ -10,7 +10,7 @@ import pinyin from 'pinyin'
 import NotFound from '../components/NotFound'
 import { requestGlobalData, GlobalData, config, clearLoginStatus } from '../app'
 import Loading from '../components/Loading'
-import styles from './styles/layout.mless'
+import styles from './styles/layout.module.less'
 import { Tabs as TabsProps } from '@/types'
 import { setConfigParams, getConfigParams } from '@/utils/config'
 
