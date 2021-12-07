@@ -35,6 +35,10 @@ export const requestGlobalData = async (): Promise<GlobalData> => ({
                             path: '/welcome',
                             name: '第二个',
                         },
+                        {
+                            path: '/test/',
+                            name: '微前端首页',
+                        },
                     ],
                 },
             ],

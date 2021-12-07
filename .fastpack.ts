@@ -35,4 +35,6 @@ export default getFastpackConfig({
         new FastpackPluginLessLoader({}),
         new WebpackChainPlugin()
     ],
+    links: [
+    ]
 })

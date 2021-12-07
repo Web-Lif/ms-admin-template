@@ -59,7 +59,6 @@ interface NotificationProps {
 const NotificationBody = () => (
     <>
         <Tabs
-            className={styles.notificationCard}
             centered
         >
             <Tabs.TabPane
