@@ -1,11 +1,10 @@
 import React, { FC, useState, Suspense, useRef, useEffect } from 'react'
 import { useLocation, Link, useHistory } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
-import { Space, Dropdown, Menu, Badge, Tabs, Select, Typography } from 'antd'
-import { SettingOutlined, BellOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined } from '@ant-design/icons'
+import { Space, Dropdown, Menu, Tabs, Select, Typography } from 'antd'
+import { SettingOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import LoadingBar from 'react-top-loading-bar'
 import pinyin from 'pinyin'
-
 
 import NotFound from '../components/NotFound'
 import { requestGlobalData, GlobalData, config, clearLoginStatus } from '../app'
@@ -13,6 +12,7 @@ import Loading from '../components/Loading'
 import styles from './styles/layout.module.less'
 import { Tabs as TabsProps } from '@/types'
 import { setConfigParams, getConfigParams } from '@/utils/config'
+import { Notification } from '@/components'
 
 interface UserTopInfoProps {
     name: string
@@ -52,67 +52,9 @@ const UserTopInfo: FC<UserTopInfoProps> = ({
     )
 }
 
-interface NotificationProps {
-    count: number
-}
 
-const NotificationBody = () => (
-    <>
-        <Tabs
-            centered
-        >
-            <Tabs.TabPane
-                tab="消息(4)"
-                key="message"
-                className={styles.notificationTabs}
-            >
-                    消息内容
-            </Tabs.TabPane>
-            <Tabs.TabPane
-                tab="代办(10)"
-                key="task"
-                className={styles.notificationTabs}
-            >
-                    代办内容
-            </Tabs.TabPane>
-        </Tabs><div
-            className={styles.notificationBottom}
-        >
-            <div>清空通知</div>
-            <div>查看更多</div>
-        </div>
-    </>
-)
 
-const Notification: FC<NotificationProps> = ({
-    count
-}) => {
-    const overlay = (
-        <Menu>
-            <NotificationBody />
-        </Menu>
-    )
 
-    return (
-        <Dropdown
-            trigger={["click"]}
-            overlay={overlay}
-            placement="bottomLeft"
-            overlayClassName={styles.notificationOverlay}
-        >
-            <div
-                className={styles.notificationDropdown}
-            >
-                <Badge
-                    count={count}
-                    className={styles.notification}
-                >
-                    <BellOutlined />
-                </Badge>
-            </div>
-        </Dropdown>
-    )
-}
 
 const findCurrentTabIndex = (tabs: MenuDataItem[], activeKey: string) => tabs.findIndex((ele) => {
     const key = ele.key || ele.path
@@ -127,7 +69,7 @@ const formatMenuFull= (menus: MenuDataItem[], path?: string) => {
     menus.forEach((menu) => {
         let realPath = path || '首页'
         if (/^\/.*/.test(realPath)) {
-            realPath = realPath?.substr(1)
+            realPath = realPath?.substring(1)
         }
         // eslint-disable-next-line no-param-reassign
         menu.fullName = realPath
