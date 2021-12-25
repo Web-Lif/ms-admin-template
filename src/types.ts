@@ -1,5 +1,10 @@
 import { MenuDataItem } from '@ant-design/pro-layout';
+import React from 'react';
 import { RouteComponentProps as RouterProps } from 'react-router-dom'
+
+export interface TabHooks {
+    onBeforeCloseTab?: () => void | boolean | Promise<void | boolean>
+}
 
 export interface Tabs {
     /**
@@ -45,6 +50,10 @@ export interface Tabs {
      */
     params?: any
 
+    /**
+     * 一些hook
+     */
+    hooks: React.MutableRefObject<TabHooks>
 }
 
 export interface RouteComponentProps extends RouterProps {
