@@ -1,5 +1,5 @@
-import React, { FC, useRef } from 'react'
-import { Button } from 'antd'
+import React, { FC, useEffect, useRef } from 'react'
+import { Button, message } from 'antd'
 import { RouteComponentProps } from '@/types'
 
 
@@ -7,6 +7,15 @@ const App: FC<RouteComponentProps> = ({
     tabs
 }) => {
     const count = useRef<number>(0)
+    useEffect(() => {
+        const { hooks } = tabs
+        hooks.current = {
+            onBeforeCloseTab: () => {
+                message.info("关闭被阻止, 请使用右键强制关闭")
+                return false
+            }
+        }
+    }, [])
     return  (
         <>
             <Button

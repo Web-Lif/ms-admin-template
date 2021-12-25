@@ -1,8 +1,8 @@
-import React, { FC, useState, Suspense, useRef, useEffect } from 'react'
+import React, { FC, useState, Suspense, useRef, useEffect, createRef } from 'react'
 import { useLocation, Link, useHistory } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
 import { Space, Dropdown, Menu, Tabs, Select, Typography } from 'antd'
-import { SettingOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined } from '@ant-design/icons'
+import { SettingOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined, BugOutlined } from '@ant-design/icons'
 import LoadingBar from 'react-top-loading-bar'
 import pinyin from 'pinyin'
 
@@ -10,7 +10,7 @@ import NotFound from '../components/NotFound'
 import { requestGlobalData, GlobalData, config, clearLoginStatus } from '../app'
 import Loading from '../components/Loading'
 import styles from './styles/layout.module.less'
-import { Tabs as TabsProps } from '@/types'
+import { TabHooks, Tabs as TabsProps } from '@/types'
 import { setConfigParams, getConfigParams } from '@/utils/config'
 import { Notification } from '@/components'
 
@@ -51,10 +51,6 @@ const UserTopInfo: FC<UserTopInfoProps> = ({
         </Dropdown>
     )
 }
-
-
-
-
 
 const findCurrentTabIndex = (tabs: MenuDataItem[], activeKey: string) => tabs.findIndex((ele) => {
     const key = ele.key || ele.path
@@ -166,7 +162,7 @@ const BasicLayout: FC = ({ children }) => {
         setConfigParams('ms-active-key', tabActiveKey)
     }, [tabActiveKey])
 
-    const tabsProps: TabsProps = {
+    const tabsProps: Omit<TabsProps, 'hooks'> = {
         open: ({
             item,
             active = true,
@@ -217,6 +213,7 @@ const BasicLayout: FC = ({ children }) => {
 
     const isMultiTabs = () => config.tabs === 'multi' && config.layout === 'side'
 
+    const hooks: {key: string | undefined, hook: React.MutableRefObject<TabHooks | null>}[] = []
     const renderChildren = () => {
         if (isMultiTabs()) {
             const renderBodyTabPane = () => tabs.map(tab => {
@@ -229,7 +226,13 @@ const BasicLayout: FC = ({ children }) => {
                 } else {
                     tabsProps.status = 'passive'
                 }
+                const hook = createRef<TabHooks>()
 
+                hooks.push({
+                    key: tab.key || tab.path,
+                    hook,
+                })
+            
                 return (
                     <Tabs.TabPane
                         tab={tab.name}
@@ -242,7 +245,8 @@ const BasicLayout: FC = ({ children }) => {
                                 key={reload?.key === key ? reload.count : undefined}
                                 tabs={{
                                     ...tabsProps,
-                                    params: tab.params
+                                    params: tab.params,
+                                    hooks: hook
                                 }}
                             />
                         </Suspense>
@@ -268,6 +272,37 @@ const BasicLayout: FC = ({ children }) => {
             }
         }
         return location
+    }
+
+    const delTab = (newTabs: MenuDataItem[], targetKey: string) => {
+        const del = () => {
+            if (targetKey) {
+                setActiveKey(targetKey)
+            }
+            setTabs(newTabs)
+        }
+
+        const tabHook = hooks.find(ele => ele.key === tabActiveKey)
+        try {
+            const result = tabHook?.hook?.current?.onBeforeCloseTab?.()
+            if (result instanceof Promise) {
+                result.then((data) => {
+                    if (data !== false) {
+                        del()
+                    }
+                }).catch((error) => {
+                    del()
+                    // eslint-disable-next-line no-console
+                    console.error(`关闭标签页错误 - [${tabActiveKey}]`, error)
+                })
+            } else if (result !== false) {
+                del()
+            }
+        } catch (error) {
+            del()
+            // eslint-disable-next-line no-console
+            console.error(`关闭标签页错误 - [${tabActiveKey}]`, error)
+        }
     }
     return (
         <>
@@ -339,8 +374,7 @@ const BasicLayout: FC = ({ children }) => {
                                                     }
                                                     return false
                                                 })
-                                                setActiveKey(node.key)
-                                                setTabs(newTabs)
+                                                delTab(newTabs, node.key)
                                             }}
                                         >
                                                 关闭其他标签页
@@ -351,13 +385,31 @@ const BasicLayout: FC = ({ children }) => {
                                             onClick={() => {
                                                 const index = findCurrentTabIndex(tabs, node.key)
                                                 const newTabs = tabs.slice(0, index + 1)
-                                                if (findCurrentTabIndex(newTabs, tabActiveKey) === -1) {
-                                                    setActiveKey(node.key)
-                                                }
-                                                setTabs(newTabs)
+                                                delTab(newTabs, node.key)
                                             }}
                                         >
                                                 关闭右侧标签页
+                                        </Menu.Item>
+                                        <Menu.Item
+                                            key="closeForce"
+                                            icon={<BugOutlined />}
+                                            onClick={() => {
+                                                const index = findCurrentTabIndex(tabs, node.key)
+                                                if (index !== -1) {
+                                                    tabs.splice(index, 1)
+                                                    setTabs([
+                                                        ...tabs
+                                                    ])
+                                                    let nextActiveKey;
+                                                    if (tabs.length > 0) {
+                                                        const tab = tabs[tabs.length - 1]
+                                                        nextActiveKey = tab.key || tab.path 
+                                                    }
+                                                    setActiveKey(nextActiveKey || '/')
+                                                }
+                                            }}
+                                        >
+                                            强制关闭标签
                                         </Menu.Item>
                                     </Menu>
                                 )}
@@ -384,18 +436,15 @@ const BasicLayout: FC = ({ children }) => {
                                     if (action === 'remove') {
                                         const index = findCurrentTabIndex(tabs, e as string)
                                         if (index !== -1) {
-                                            tabs.splice(index, 1)
-                                            setTabs([
-                                                ...tabs
-                                            ])
+                                            const newTable = [...tabs]
+                                            newTable.splice(index, 1)
                                             let nextActiveKey;
-                                            if (tabs.length > 0) {
-                                                const tab = tabs[tabs.length - 1]
+                                            if (newTable.length > 0) {
+                                                const tab = newTable[newTable.length - 1]
                                                 nextActiveKey = tab.key || tab.path 
                                             }
-                                            setActiveKey(nextActiveKey || '/')
+                                            delTab(newTable, nextActiveKey || '/')
                                         }
-            
                                     }
                                 }}
                                 onChange={(key) => {
