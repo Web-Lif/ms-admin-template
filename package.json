@@ -6,7 +6,7 @@
     "scripts": {
         "start": "fastpack dev",
         "start:frame": "cross-env MainFrame=true fastpack dev ",
-        "build": "cross-env Analyzer=true fastpack build",
+        "build": "cross-env fastpack build",
         "lint:script": "eslint src --ext .js,.jsx,.ts,.tsx",
         "test": "jest"
     },
