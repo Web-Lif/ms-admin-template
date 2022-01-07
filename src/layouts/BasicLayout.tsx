@@ -311,6 +311,7 @@ const BasicLayout: FC = ({ children }) => {
                 className={styles.proLayout}
                 title={globalData.title}
                 layout={config.layout}
+                logo={config.logo}
                 navTheme={config.navTheme}
                 headerTheme={config.headerTheme}
                 location={getLocation()}

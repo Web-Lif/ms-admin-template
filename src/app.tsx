@@ -77,11 +77,14 @@ export type Config = {
     headerTheme: 'light' | 'dark'
     // 标签页模式 
     tabs: 'single' | 'multi'
+    // 主题的 Log
+    logo: string
 }
 
 export const config: Config = {
     layout: 'side',
     navTheme: 'dark',
     headerTheme: 'dark',
-    tabs: 'multi'
+    tabs: 'multi',
+    logo: 'https://avatars.githubusercontent.com/u/91562499?s=200&v=4'
 }
