@@ -14,6 +14,7 @@
         "@ant-design/icons": "^4.7.0",
         "@ant-design/pro-layout": "^6.26.6",
         "antd": "^4.16.13",
+        "axios": "^0.26.1",
         "dexie": "^3.0.3",
         "pinyin": "^2.10.2",
         "react": "^17.0.2",
