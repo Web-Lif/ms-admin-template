@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState,FC } from 'react'
+import React, { useState,FC, useEffect } from 'react'
 import { Form, Input, Tabs, Button, Typography, Checkbox } from 'antd'
 import { RouteComponentProps } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
@@ -11,9 +11,11 @@ const Login: FC<RouteComponentProps> = ({
     history
 }) => {
     
-    if (checkLoginStatus()) {
-        history.push('/')
-    }
+    useEffect(() => {
+        if (checkLoginStatus()) {
+            history.push('/')
+        }
+    }, [])
 
     const [loading, setLoading] = useState<boolean>(false)
 
