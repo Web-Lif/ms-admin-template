@@ -134,7 +134,7 @@ npm run test
 
 ```tsx
 import React, { FC, useRef } from 'react'
-import { Button } from 'antd'
+import { Button } from '@weblif/fast-ui'
 import { RouteComponentProps } from '@/types'
 
 

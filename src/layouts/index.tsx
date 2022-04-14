@@ -1,5 +1,6 @@
 import React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
+import 'antd/dist/antd.variable.less';
 import BasicLayout from './BasicLayout'
 import { requestIgnoreList, checkLoginStatus } from '../app'
 
@@ -14,7 +15,12 @@ export const useIgnoreLayout = () => {
     return false
 }
 
-const Layout: React.FC = ({ children }) => {
+
+type LayoutProps = {
+    children?: React.ReactNode
+}
+
+const Layout = ({ children }: LayoutProps) => {
 
     if (useIgnoreLayout()) {
         return (

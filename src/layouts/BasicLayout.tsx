@@ -1,18 +1,17 @@
 import React, { FC, useState, Suspense, useRef, useEffect, createRef } from 'react'
 import { useLocation, Link, useHistory } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
-import { Space, Dropdown, Menu, Tabs, Select, Typography } from 'antd'
+import { Space, Dropdown, Menu, Tabs, Select, Typography } from '@weblif/fast-ui'
 import { SettingOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined, BugOutlined } from '@ant-design/icons'
 import LoadingBar from 'react-top-loading-bar'
 import pinyin from 'pinyin'
 
-import NotFound from '../components/NotFound'
-import { requestGlobalData, GlobalData, config, clearLoginStatus } from '../app'
-import Loading from '../components/Loading'
-import styles from './styles/layout.module.less'
 import { TabHooks, Tabs as TabsProps } from '@/types'
 import { setConfigParams, getConfigParams } from '@/utils/config'
-import { Notification } from '@/components'
+import { Notification, NotFound, Loading } from '@/components'
+import { requestGlobalData, GlobalData, config, clearLoginStatus } from '../app'
+
+import styles from './styles/layout.module.less'
 
 interface UserTopInfoProps {
     name: string
@@ -82,8 +81,11 @@ interface SearchItem {
     data?: any
 }
 
+type BasicLayoutProps = {
+    children?: React.ReactNode
+}
 
-const BasicLayout: FC = ({ children }) => {
+const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
 
     const location = useLocation()
 
@@ -108,7 +110,7 @@ const BasicLayout: FC = ({ children }) => {
 
 
     const loadingRef = useRef<any>(null)
-    const searchRef = useRef<HTMLDivElement>(null)
+    const searchRef = useRef<any>(null)
 
 
     const getSearchList = (menuDatas: MenuDataItem[]) => {
@@ -256,6 +258,7 @@ const BasicLayout: FC = ({ children }) => {
             return (
                 <Tabs
                     className={styles.tabsHideNav}
+                    renderTabBar={() => <div />}
                     activeKey={tabActiveKey}
                 >
                     {renderBodyTabPane()}
@@ -471,7 +474,8 @@ const BasicLayout: FC = ({ children }) => {
                                 width: 250
                             }}
                             filterOption={(input, option) => {
-                                const initials = pinyin(option?.children[0], {
+                                const optionStr: string = (option?.children?.[0] as unknown as string)
+                                const initials = pinyin( optionStr, {
                                     style: pinyin.STYLE_FIRST_LETTER
                                 })
                                 const value = pinyin(input, {
@@ -481,7 +485,7 @@ const BasicLayout: FC = ({ children }) => {
                                 const regexp = new RegExp(`^${value.join('')}.*`)
                                 return regexp.test(initials.join(''))
                             }}
-                            onSelect={(value) => {
+                            onSelect={(value: string) => {
                                 const item = searchItems.find(ele => ele.key === value)
                                 if (item) {
                                     tabsProps.open({

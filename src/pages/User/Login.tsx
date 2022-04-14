@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState,FC, useEffect } from 'react'
-import { Form, Input, Tabs, Button, Typography, Checkbox } from 'antd'
+import { Form, Input, Tabs, Button, Typography, Checkbox } from '@weblif/fast-ui'
 import { RouteComponentProps } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { checkLoginStatus } from '@/app'

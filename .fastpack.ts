@@ -1,4 +1,3 @@
-import FastpackPluginBabelImport from '@weblif/plugin-babel-import'
 import FastpackPluginLessLoader from '@weblif/plugin-less-loader'
 // @ts-ignore
 import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin';
@@ -31,9 +30,6 @@ export default getFastpackConfig({
     },
     publicPath: '/ms-template',
     plugins: [
-        new FastpackPluginBabelImport([
-            { "libraryName": "antd", "style": true, libraryDirectory: 'es' },
-        ]),
         new FastpackPluginLessLoader({}),
         new WebpackChainPlugin()
     ],

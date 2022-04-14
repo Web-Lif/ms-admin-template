@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Dropdown, Menu, Badge, Tabs } from 'antd'
+import { Dropdown, Menu, Badge, Tabs } from '@weblif/fast-ui'
 import { BellOutlined } from '@ant-design/icons'
 import styles from './styles/notification.module.less'
 
