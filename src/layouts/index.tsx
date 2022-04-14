@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import 'antd/dist/antd.variable.less';
+import 'antd/dist/antd.variable.css';
 import BasicLayout from './BasicLayout'
 import { requestIgnoreList, checkLoginStatus } from '../app'
 
