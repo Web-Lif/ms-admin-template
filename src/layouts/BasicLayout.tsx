@@ -101,7 +101,14 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
         closable: false
     }])
 
+
     const [tabActiveKey, setActiveKey] = useState<string>('/')
+
+
+
+    useEffect(() => {
+        window.history.pushState({}, '',  `${tabActiveKey}`)
+    }, [tabActiveKey])
 
     const [reload, setReload]  =useState<{
         key: string,
@@ -171,7 +178,6 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
             params
         }) => {
             const key = item.key || item.path
-
             if (findCurrentTabIndex(tabs, key!) === -1) {
                 setTabs([
                     ...tabs,

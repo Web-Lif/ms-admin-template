@@ -36,7 +36,7 @@ export const requestGlobalData = async (): Promise<GlobalData> => ({
                             name: '第二个',
                         },
                         {
-                            path: '/test/',
+                            path: '/test/test-react',
                             name: 'React 微前端',
                         },
                         {
