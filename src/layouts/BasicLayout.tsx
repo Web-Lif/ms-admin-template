@@ -1,5 +1,5 @@
 import React, { FC, useState, Suspense, useRef, useEffect, createRef } from 'react'
-import { useLocation, Link, useHistory } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
 import { Space, Dropdown, Menu, Tabs, Select, Typography } from '@weblif/fast-ui'
 import { SettingOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined, BugOutlined } from '@ant-design/icons'
@@ -19,37 +19,34 @@ interface UserTopInfoProps {
 
 const UserTopInfo: FC<UserTopInfoProps> = ({
     name,
-}) => {
-    const history = useHistory()
-
-    return (
-        <Dropdown
-            overlay={(
-                <Menu>
-                    <Menu.Item
-                        key="logout"
-                        icon={ <SettingOutlined />}
+}) => (
+    <Dropdown
+        overlay={(
+            <Menu>
+                <Menu.Item
+                    key="logout"
+                    icon={ <SettingOutlined />}
+                >
+                    <div
+                        role="button"
+                        aria-hidden="true"
+                        onClick={() => {
+                            clearLoginStatus()
+                            window.location.href = '/User/Login'
+                        }}
                     >
-                        <div
-                            role="button"
-                            aria-hidden="true"
-                            onClick={() => {
-                                clearLoginStatus()
-                                history.push('/User/Login')
-                            }}
-                        >
-                            退出登录
-                        </div>
-                    </Menu.Item>
-                </Menu>
-            )}
-        >
-            <div className={styles.userName}>
-                {name}
-            </div>
-        </Dropdown>
-    )
-}
+                        退出登录
+                    </div>
+                </Menu.Item>
+            </Menu>
+        )}
+    >
+        <div className={styles.userName}>
+            {name}
+        </div>
+    </Dropdown>
+)
+
 
 const findCurrentTabIndex = (tabs: MenuDataItem[], activeKey: string) => tabs.findIndex((ele) => {
     const key = ele.key || ele.path

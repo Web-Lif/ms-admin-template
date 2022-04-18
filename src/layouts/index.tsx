@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import 'antd/dist/antd.variable.css';
 import { requestIgnoreList, checkLoginStatus } from '../app'
@@ -37,9 +37,11 @@ const Layout = ({ children }: LayoutProps) => {
     }
 
     return (
-        <BasicLayout>
-            {children}
-        </BasicLayout>
+        <Suspense fallback={<div />}>
+            <BasicLayout>
+                {children}
+            </BasicLayout>
+        </Suspense>
     )
 }
 
