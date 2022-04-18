@@ -1,9 +1,10 @@
 import React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import 'antd/dist/antd.variable.css';
-import BasicLayout from './BasicLayout'
 import { requestIgnoreList, checkLoginStatus } from '../app'
 
+
+const BasicLayout = React.lazy(() => import('./BasicLayout'));
 
 export const useIgnoreLayout = () => {
     const location = useLocation()
@@ -14,7 +15,6 @@ export const useIgnoreLayout = () => {
 
     return false
 }
-
 
 type LayoutProps = {
     children?: React.ReactNode

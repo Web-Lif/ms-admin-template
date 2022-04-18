@@ -3,6 +3,7 @@ import FastpackPluginLessLoader from '@weblif/plugin-less-loader'
 import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin'
 import { getFastpackConfig } from '@weblif/fastpack'
+import { join } from 'path'
 
 /**
  * 扩展 Webpack 的信息
