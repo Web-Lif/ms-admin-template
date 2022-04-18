@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkms_template=self.webpackChunkms_template||[]).push([[21],{32021:(t,e,s)=>{s.r(e),s.d(e,{default:()=>r});var a=s(91013),n=s.n(a);const r=function(t){var e=t.tabs;return(0,a.useEffect)((function(){console.log(JSON.stringify(e.params),e.status)}),[e.status]),n().createElement(n().Fragment,null,"这个是首页信息  ",JSON.stringify(e.params))}}}]);
