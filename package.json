@@ -15,6 +15,7 @@
         "@ant-design/pro-layout": "^6.26.6",
         "@weblif/fast-ui": "^0.2.8-canary",
         "axios": "^0.26.1",
+        "date-fns": "^2.28.0",
         "dexie": "^3.0.3",
         "pinyin": "^2.10.2",
         "react": "^18.0.0",
