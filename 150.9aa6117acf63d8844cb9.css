@@ -6198,12 +6198,12 @@ a.ant-btn-sm {
   outline: none;
 }
 
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
 .ant-pro-page-container-children-content {
   margin: 24px 24px 0;
+  padding: inherit;
+}
+.ant-pro-page-container {
+  background-color: inherit;
 }
 .ant-pro-page-container-warp {
   background-color: #fff;
@@ -6475,10 +6475,6 @@ a.ant-btn-sm {
   }
 }
 
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
 .ant-pro-grid-content {
   width: 100%;
 }
@@ -6487,10 +6483,6 @@ a.ant-btn-sm {
   margin: 0 auto;
 }
 
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
 .ant-pro-footer-bar {
   position: fixed;
   right: 0;
@@ -6645,10 +6637,6 @@ a.ant-btn-sm {
   direction: rtl;
 }
 
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
 .ant-pro-basicLayout {
   display: flex;
   flex-direction: column;
@@ -6696,10 +6684,6 @@ a.ant-btn-sm {
   height: calc(100vh - 48px);
 }
 
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
 .ant-pro-fixed-header {
   z-index: 9;
   width: 100%;
@@ -6707,57 +6691,10 @@ a.ant-btn-sm {
 .ant-pro-fixed-header-action {
   transition: width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
+.ant-pro-header-realDark {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.65);
+}
 
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
-.ant-pro-basicLayout {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 100%;
-}
-.ant-pro-basicLayout .ant-layout-header.ant-pro-fixed-header {
-  position: fixed;
-  top: 0;
-}
-.ant-pro-basicLayout .ant-layout-header.ant-pro-header-light {
-  background: #fff;
-}
-.ant-pro-basicLayout-content {
-  position: relative;
-  margin: 24px;
-}
-.ant-pro-basicLayout-content .ant-pro-page-container {
-  margin: -24px -24px 0;
-}
-.ant-pro-basicLayout-content-disable-margin {
-  margin: 0;
-}
-.ant-pro-basicLayout-content-disable-margin .ant-pro-page-container {
-  margin: 0;
-}
-.ant-pro-basicLayout-content > .ant-layout {
-  max-height: 100%;
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-is-children.ant-pro-basicLayout-fix-siderbar {
-  height: 100vh;
-  overflow: hidden;
-  transform: rotate(0);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .tech-page-container {
-  height: calc(100vh - 48px);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-has-header .tech-page-container {
-  height: calc(100vh - 48px - 48px);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children {
-  min-height: calc(100vh - 48px);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-fix-siderbar {
-  height: calc(100vh - 48px);
-}
 .ant-pro-global-header {
   position: relative;
   display: flex;
@@ -6799,12 +6736,14 @@ a.ant-btn-sm {
 }
 .ant-pro-global-header-logo a h1 {
   height: 32px;
-  margin: 0 0 0 8px;
   margin: 0 0 0 12px;
   color: #1890ff;
   font-weight: 600;
   font-size: 18px;
   line-height: 32px;
+}
+.ant-pro-global-header-logo-rtl a h1 {
+  margin: 0 12px 0 0;
 }
 .ant-pro-global-header-menu .anticon {
   margin-right: 8px;
@@ -6829,56 +6768,6 @@ a.ant-btn-sm {
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
-.ant-pro-basicLayout {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 100%;
-}
-.ant-pro-basicLayout .ant-layout-header.ant-pro-fixed-header {
-  position: fixed;
-  top: 0;
-}
-.ant-pro-basicLayout .ant-layout-header.ant-pro-header-light {
-  background: #fff;
-}
-.ant-pro-basicLayout-content {
-  position: relative;
-  margin: 24px;
-}
-.ant-pro-basicLayout-content .ant-pro-page-container {
-  margin: -24px -24px 0;
-}
-.ant-pro-basicLayout-content-disable-margin {
-  margin: 0;
-}
-.ant-pro-basicLayout-content-disable-margin .ant-pro-page-container {
-  margin: 0;
-}
-.ant-pro-basicLayout-content > .ant-layout {
-  max-height: 100%;
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-is-children.ant-pro-basicLayout-fix-siderbar {
-  height: 100vh;
-  overflow: hidden;
-  transform: rotate(0);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .tech-page-container {
-  height: calc(100vh - 48px);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-has-header .tech-page-container {
-  height: calc(100vh - 48px - 48px);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children {
-  min-height: calc(100vh - 48px);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-fix-siderbar {
-  height: calc(100vh - 48px);
-}
 .ant-pro-sider {
   position: relative;
   background-color: #001529;
@@ -7312,56 +7201,6 @@ a.ant-btn-sm {
   }
 }
 
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
-.ant-pro-basicLayout {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 100%;
-}
-.ant-pro-basicLayout .ant-layout-header.ant-pro-fixed-header {
-  position: fixed;
-  top: 0;
-}
-.ant-pro-basicLayout .ant-layout-header.ant-pro-header-light {
-  background: #fff;
-}
-.ant-pro-basicLayout-content {
-  position: relative;
-  margin: 24px;
-}
-.ant-pro-basicLayout-content .ant-pro-page-container {
-  margin: -24px -24px 0;
-}
-.ant-pro-basicLayout-content-disable-margin {
-  margin: 0;
-}
-.ant-pro-basicLayout-content-disable-margin .ant-pro-page-container {
-  margin: 0;
-}
-.ant-pro-basicLayout-content > .ant-layout {
-  max-height: 100%;
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-is-children.ant-pro-basicLayout-fix-siderbar {
-  height: 100vh;
-  overflow: hidden;
-  transform: rotate(0);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .tech-page-container {
-  height: calc(100vh - 48px);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-has-header .tech-page-container {
-  height: calc(100vh - 48px - 48px);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children {
-  min-height: calc(100vh - 48px);
-}
-.ant-pro-basicLayout .ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-has-header .ant-pro-basicLayout-is-children.ant-pro-basicLayout-fix-siderbar {
-  height: calc(100vh - 48px);
-}
 .ant-pro-top-nav-header {
   position: relative;
   width: 100%;
@@ -7399,7 +7238,8 @@ a.ant-btn-sm {
   height: 100%;
   overflow: hidden;
 }
-.ant-pro-top-nav-header-logo img {
+.ant-pro-top-nav-header-logo img,
+.ant-pro-top-nav-header-logo a > svg {
   display: inline-block;
   height: 32px;
   vertical-align: middle;
@@ -7408,7 +7248,6 @@ a.ant-btn-sm {
   display: inline-block;
   margin: 0 0 0 12px;
   color: #fff;
-  font-weight: 400;
   font-size: 16px;
   vertical-align: top;
 }
@@ -7420,10 +7259,6 @@ a.ant-btn-sm {
   border: none;
 }
 
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
 .ant-pro-global-footer {
   margin: 48px 0 24px 0;
   padding: 0 16px;
