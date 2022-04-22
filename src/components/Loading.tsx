@@ -1,11 +1,8 @@
 import React, { useEffect, useRef } from 'react'
-import LoadingBar from 'react-top-loading-bar'
+import LoadingBar, { LoadingBarRef } from '@weblif/react-top-loading-bar'
 
 const Loading = () => {
-    const ref = useRef<{
-        continuousStart: () => void,
-        complete: () => void,
-    }>(null)
+    const ref = useRef<LoadingBarRef>(null)
 
     useEffect(() => {
         ref.current?.continuousStart()
