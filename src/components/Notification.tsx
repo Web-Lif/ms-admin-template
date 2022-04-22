@@ -17,14 +17,14 @@ const NotificationBody = () => (
                 key="message"
                 className={styles.notificationTabs}
             >
-                    消息内容
+                消息内容
             </Tabs.TabPane>
             <Tabs.TabPane
                 tab="代办(10)"
                 key="task"
                 className={styles.notificationTabs}
             >
-                    代办内容
+                代办内容
             </Tabs.TabPane>
         </Tabs><div
             className={styles.notificationBottom}
@@ -46,7 +46,7 @@ const Notification: FC<NotificationProps> = ({
 
     return (
         <Dropdown
-            trigger={["click"]}
+            trigger={['click']}
             overlay={overlay}
             placement="bottomLeft"
             overlayClassName={styles.notificationOverlay}

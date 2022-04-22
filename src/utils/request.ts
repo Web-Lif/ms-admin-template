@@ -16,7 +16,7 @@ request.interceptors.response.use(
             })
             window.location.href = '/User/Login'
         }
-        return Promise.reject(error);
+        return Promise.reject(error)
     }
 )
 

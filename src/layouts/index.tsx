@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import 'antd/dist/antd.variable.css';
 import { requestIgnoreList, checkLoginStatus } from '../app'
 
+import '@weblif/fast-ui/es/app'
 
-const BasicLayout = React.lazy(() => import('./BasicLayout'));
+const BasicLayout = React.lazy(() => import('./BasicLayout'))
 
 export const useIgnoreLayout = () => {
     const location = useLocation()

@@ -11,7 +11,7 @@ const App: FC<RouteComponentProps> = ({
         const { hooks } = tabs
         hooks.current = {
             onBeforeCloseTab: () => {
-                message.info("关闭被阻止, 请使用右键强制关闭")
+                message.info('关闭被阻止, 请使用右键强制关闭')
                 return false
             }
         }

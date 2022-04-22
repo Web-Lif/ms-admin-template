@@ -1,34 +1,39 @@
-import { MenuDataItem } from '@ant-design/pro-layout';
-import React from 'react';
+import { MenuDataItem } from '@ant-design/pro-layout'
+import React from 'react'
 import { RouteComponentProps as RouterProps } from 'react-router-dom'
 
 export interface TabHooks {
     onBeforeCloseTab?: () => void | boolean | Promise<void | boolean>
 }
 
+type FunctionOpen = ({
+    item,
+    active,
+    params
+}: {
+    item: MenuDataItem,
+    active?: boolean,
+    params?: unknown
+}) => void
+
+
+type FunctionClose = ({
+    key, goback
+}:{
+    key: string,
+    goback?: string
+}) => void
+
 export interface Tabs {
     /**
      * 开启一个标签页
      */
-    open: ({
-        item,
-        active,
-        params
-    }: {
-        item: MenuDataItem,
-        active?: boolean,
-        params?: any 
-    }) => void
+    open: FunctionOpen
 
     /**
      * 关闭标签页
      */
-    close: ({
-        key, goback
-    }:{
-        key: string,
-        goback?: string
-    }) => void
+    close: FunctionClose
 
     /**
      * 激活当前的标签页信息
@@ -37,7 +42,7 @@ export interface Tabs {
         key
     }: {
         key: string,
-        params?: any
+        params?: unknown
     }) => void
     
     /**
@@ -48,7 +53,7 @@ export interface Tabs {
     /**
      * 当前标签页的信息
      */
-    params?: any
+    params?: unknown
 
     /**
      * 一些hook
