@@ -30,7 +30,6 @@ export default getFastpackConfig({
         new FastpackPluginLessLoader({}),
         new WebpackChainPlugin()
     ],
-    devtool: 'source-map',
     links: [
         // 'test@http://127.0.0.1:8085/fastpack.share.js'
     ]
