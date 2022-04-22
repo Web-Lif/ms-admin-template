@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState,FC, useEffect } from 'react'
 import { Form, Input, Tabs, Button, Typography, Checkbox } from '@weblif/fast-ui'
 import { RouteComponentProps } from 'react-router-dom'
@@ -19,7 +18,7 @@ const Login: FC<RouteComponentProps> = ({
 
     const [loading, setLoading] = useState<boolean>(false)
 
-    const onFinishLogin = (values: any) => {
+    const onFinishLogin = (values: unknown) => {
         setLoading(true)
         localStorage.setItem('ms-token', JSON.stringify(values))
         setLoading(false)
@@ -88,7 +87,7 @@ const Login: FC<RouteComponentProps> = ({
                                 </Form.Item>
     
                                 <a
-                                    style={{ float: 'right'}}
+                                    style={{ float: 'right' }}
                                 >
                                     忘记密码 ?
                                 </a>

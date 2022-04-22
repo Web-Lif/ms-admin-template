@@ -1,4 +1,4 @@
-import React, { FC, useState, Suspense, useRef, useEffect, createRef } from 'react'
+import React, { FC, useState, Suspense, useRef, useEffect, createRef, ReactElement } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
 import { Space, Dropdown, Menu, Tabs, Select, Typography } from '@weblif/fast-ui'
@@ -12,6 +12,7 @@ import { Notification, NotFound, Loading } from '@/components'
 import { requestGlobalData, GlobalData, config, clearLoginStatus } from '../app'
 
 import styles from './styles/layout.module.less'
+import { BaseSelectRef } from 'rc-select'
 
 interface UserTopInfoProps {
     name: string
@@ -57,7 +58,7 @@ const findCurrentTabIndex = (tabs: MenuDataItem[], activeKey: string) => tabs.fi
 })
 
 
-const formatMenuFull= (menus: MenuDataItem[], path?: string) => {
+const formatMenuFull = (menus: MenuDataItem[], path?: string) => {
     menus.forEach((menu) => {
         let realPath = path || '首页'
         if (/^\/.*/.test(realPath)) {
@@ -74,8 +75,8 @@ const formatMenuFull= (menus: MenuDataItem[], path?: string) => {
 interface SearchItem {
     key: string
     title: string
-    description: any
-    data?: any
+    description: string
+    data?: MenuDataItem
 }
 
 type BasicLayoutProps = {
@@ -101,20 +102,22 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
 
     const [tabActiveKey, setActiveKey] = useState<string>('/')
 
-
-
     useEffect(() => {
         window.history.pushState({}, '',  `${tabActiveKey}`)
     }, [tabActiveKey])
 
-    const [reload, setReload]  =useState<{
+    const [reload, setReload] = useState<{
         key: string,
         count: number
     }>()
 
 
-    const loadingRef = useRef<any>(null)
-    const searchRef = useRef<any>(null)
+    const loadingRef = useRef<{
+        continuousStart: () => void,
+        complete: () => void,
+    }>(null)
+
+    const searchRef = useRef<BaseSelectRef>(null)
 
 
     const getSearchList = (menuDatas: MenuDataItem[]) => {
@@ -132,12 +135,12 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
     const [searchItems, setSearchItems] = useState<SearchItem[]>([])
 
     useEffect(() => {
-        getConfigParams('ms-tabs').then((data: any[]) => {
+        getConfigParams<MenuDataItem[]>('ms-tabs').then((data) => {
             if (data?.length > 0) {
                 setTabs(data)
             }
         })
-        getConfigParams('ms-active-key').then((data: string) => {
+        getConfigParams<string>('ms-active-key').then((data) => {
             if (data) {
                 setActiveKey(data)
             }
@@ -158,7 +161,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        setConfigParams('ms-tabs', tabs.map((ele: any) => ({
+        setConfigParams('ms-tabs', tabs.map((ele) => ({
             ...ele,
             onClick: undefined
         })))
@@ -175,7 +178,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
             params
         }) => {
             const key = item.key || item.path
-            if (findCurrentTabIndex(tabs, key!) === -1) {
+            if (findCurrentTabIndex(tabs, key || '') === -1) {
                 setTabs([
                     ...tabs,
                     {
@@ -186,7 +189,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
             }
 
             if (active) {
-                setActiveKey(key!)
+                setActiveKey(key || '')
             }
         },
         close: ({
@@ -222,7 +225,8 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
     const renderChildren = () => {
         if (isMultiTabs()) {
             const renderBodyTabPane = () => tabs.map(tab => {
-                const router = (window as any).g_routers.find((ele: any) => ele.path === tab.path)
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const router = (window as any).g_routers.find((ele: { path: string}) => ele.path === tab.path)
                 const DynamicComponent = router?.component || NotFound
                 const key = (tab.key || tab.path) || ''
                 
@@ -346,7 +350,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                 }}
                 headerContentRender={() => {
                     if (isMultiTabs()) {
-                        const renderDropdownNode = (node: any) => (
+                        const renderDropdownNode = (node: ReactElement) => (
                             <Dropdown
                                 overlay={(
                                     <Menu>
@@ -360,12 +364,12 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                                                     number += (reload?.count || 0) + 1
                                                 }
                                                 setReload({
-                                                    key: node.key,
+                                                    key: node.key?.toString() || '',
                                                     count: number
                                                 })
                                                 setTimeout(() => {
                                                     loadingRef.current?.complete()
-                                                }, 0);
+                                                }, 0)
                                             }}
                                         >
                                             重新加载
@@ -375,39 +379,39 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                                             icon={<CloseCircleOutlined />}
                                             onClick={() => {
                                                 const newTabs = tabs.filter(ele => {
-                                                    const key = ele.key || ele.path
+                                                    const key = (ele.key || ele.path) || ''
                                                     if (['/', node.key].includes(key)) {
                                                         return true
                                                     }
                                                     return false
                                                 })
-                                                delTab(newTabs, node.key)
+                                                delTab(newTabs, node.key?.toString() || '')
                                             }}
                                         >
-                                                关闭其他标签页
+                                            关闭其他标签页
                                         </Menu.Item>
                                         <Menu.Item
                                             key="closeRight"
                                             icon={<ScissorOutlined />}
                                             onClick={() => {
-                                                const index = findCurrentTabIndex(tabs, node.key)
+                                                const index = findCurrentTabIndex(tabs, node.key?.toString() || '')
                                                 const newTabs = tabs.slice(0, index + 1)
-                                                delTab(newTabs, node.key)
+                                                delTab(newTabs, node.key?.toString() || '')
                                             }}
                                         >
-                                                关闭右侧标签页
+                                            关闭右侧标签页
                                         </Menu.Item>
                                         <Menu.Item
                                             key="closeForce"
                                             icon={<BugOutlined />}
                                             onClick={() => {
-                                                const index = findCurrentTabIndex(tabs, node.key)
+                                                const index = findCurrentTabIndex(tabs, node.key?.toString() || '')
                                                 if (index !== -1) {
                                                     tabs.splice(index, 1)
                                                     setTabs([
                                                         ...tabs
                                                     ])
-                                                    let nextActiveKey;
+                                                    let nextActiveKey
                                                     if (tabs.length > 0) {
                                                         const tab = tabs[tabs.length - 1]
                                                         nextActiveKey = tab.key || tab.path 
@@ -432,9 +436,8 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                                 className={styles.tabsNavTop}
                                 activeKey={tabActiveKey}
                                 renderTabBar={(props, DefaultTabBar) => (
-                                    // eslint-disable-next-line react/jsx-props-no-spreading
                                     <DefaultTabBar {...props} >
-                                        {(node: any) => (
+                                        {(node: ReactElement) => (
                                             renderDropdownNode(node)
                                         )}
                                     </DefaultTabBar>
@@ -445,7 +448,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                                         if (index !== -1) {
                                             const newTable = [...tabs]
                                             newTable.splice(index, 1)
-                                            let nextActiveKey;
+                                            let nextActiveKey
                                             if (newTable.length > 0) {
                                                 const tab = newTable[newTable.length - 1]
                                                 nextActiveKey = tab.key || tab.path 
@@ -490,7 +493,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                             }}
                             onSelect={(value: string) => {
                                 const item = searchItems.find(ele => ele.key === value)
-                                if (item) {
+                                if (item?.data) {
                                     tabsProps.open({
                                         item: item.data,
                                     })
@@ -547,7 +550,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                                         item
                                     ])
                                 }
-                                setActiveKey(activeKey!)
+                                setActiveKey(activeKey || '')
                             }
                             return (
                                 <div

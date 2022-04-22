@@ -1,9 +1,6 @@
 import FastpackPluginLessLoader from '@weblif/plugin-less-loader'
-// @ts-ignore
-import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin'
 import { getFastpackConfig } from '@weblif/fastpack'
-import { join } from 'path'
 
 /**
  * 扩展 Webpack 的信息
@@ -13,7 +10,6 @@ class WebpackChainPlugin {
         webpack.plugin('fastpack/ESLintPlugin').use(ESLintPlugin, [{
             extensions: ['.ts', '.tsx', '.js', '.jsx']
         }])
-        webpack.plugin('fastpack/AntdDayjsWebpackPlugin').use(AntdDayjsWebpackPlugin)
     }
 }
 

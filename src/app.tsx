@@ -5,7 +5,7 @@ export type GlobalData = {
     name: string,
     title: string,
     menus: MenuDataItem[],
-    [name: string]: any
+    [name: string]: unknown
 }
 
 /**
@@ -54,7 +54,7 @@ export const requestGlobalData = async (): Promise<GlobalData> => ({
  * 检查登入状态，用户是否登入
  */
 export const checkLoginStatus = () => {
-    if(localStorage.getItem('ms-token')) {
+    if (localStorage.getItem('ms-token')) {
         return true
     }
     return false
