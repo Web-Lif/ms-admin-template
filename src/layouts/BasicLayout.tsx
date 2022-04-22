@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
 import { Space, Dropdown, Menu, Tabs, Select, Typography } from '@weblif/fast-ui'
 import { SettingOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined, BugOutlined } from '@ant-design/icons'
-import LoadingBar from 'react-top-loading-bar'
+import LoadingBar, { LoadingBarRef } from '@weblif/react-top-loading-bar'
 import pinyin from 'pinyin'
 
 import { TabHooks, Tabs as TabsProps } from '@/types'
@@ -111,11 +111,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
         count: number
     }>()
 
-
-    const loadingRef = useRef<{
-        continuousStart: () => void,
-        complete: () => void,
-    }>(null)
+    const loadingRef = useRef<LoadingBarRef>(null)
 
     const searchRef = useRef<BaseSelectRef>(null)
 
@@ -136,7 +132,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
 
     useEffect(() => {
         getConfigParams<MenuDataItem[]>('ms-tabs').then((data) => {
-            if (data?.length > 0) {
+            if (data && data?.length > 0) {
                 setTabs(data)
             }
         })
@@ -168,6 +164,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
     }, [tabs])
 
     useEffect(() => {
+        console.log(tabActiveKey)
         setConfigParams('ms-active-key', tabActiveKey)
     }, [tabActiveKey])
 
@@ -189,7 +186,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
             }
 
             if (active) {
-                setActiveKey(key || '')
+                setActiveKey(key || '/')
             }
         },
         close: ({
@@ -278,7 +275,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
     const getLocation = () => {
         if (isMultiTabs()) {
             return {
-                pathname: tabActiveKey
+                pathname: tabActiveKey.toString()
             }
         }
         return location

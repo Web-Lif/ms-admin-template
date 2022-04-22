@@ -6,11 +6,11 @@ db.version(1).stores({
     'ms-config': 'id,value',
 })
 
-type FunctionMSConfig = <T> (name: string) => Promise<T>
+type FunctionMSConfig = <T> (name: string) => Promise<T | undefined>
 
 export const getConfigParams: FunctionMSConfig = async (name) => {
     const data = await db.table('ms-config').where('id').equals(name).first()
-    return data?.value || []
+    return data?.value
 }
 
 export const setConfigParams = async (name: string, value: unknown) => {
