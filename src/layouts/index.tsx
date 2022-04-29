@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { useLocation, useNavigate, Outlet } from 'react-router-dom'
+import { useLocation, Outlet, Navigate } from 'react-router-dom'
 import { requestIgnoreList, checkLoginStatus } from '../app'
 
 import '@weblif/fast-ui/es/app'
@@ -27,11 +27,7 @@ const Layout = () => {
     }
 
     if (!checkLoginStatus()) {
-        const navigate = useNavigate()
-        navigate('/User/Login', {
-            replace: true
-        })
-        return null
+        return <Navigate to="/User/Login" replace />
     }
 
     return (
