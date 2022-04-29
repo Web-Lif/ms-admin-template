@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useNavigate, Outlet } from 'react-router-dom'
 import { requestIgnoreList, checkLoginStatus } from '../app'
 
 import '@weblif/fast-ui/es/app'
 
-const BasicLayout = React.lazy(() => import('./BasicLayout'))
+const BasicLayout = React.lazy(() => import(/* webpackPrefetch: true */ './BasicLayout'))
 
 export const useIgnoreLayout = () => {
     const location = useLocation()
@@ -16,30 +16,28 @@ export const useIgnoreLayout = () => {
     return false
 }
 
-type LayoutProps = {
-    children?: React.ReactNode
-}
-
-const Layout = ({ children }: LayoutProps) => {
+const Layout = () => {
 
     if (useIgnoreLayout()) {
         return (
             <>
-                {children}
+                <Outlet />
             </>
         )
     }
 
     if (!checkLoginStatus()) {
-        const history = useHistory()
-        history.replace('/User/Login')
+        const navigate = useNavigate()
+        navigate('/User/Login', {
+            replace: true
+        })
         return null
     }
 
     return (
         <Suspense fallback={<div />}>
             <BasicLayout>
-                {children}
+                <Outlet />
             </BasicLayout>
         </Suspense>
     )

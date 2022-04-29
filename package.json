@@ -8,30 +8,30 @@
         "start:frame": "cross-env MainFrame=true fastpack dev ",
         "build": "cross-env fastpack build",
         "lint:script": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
-        "test": "jest"
+        "test": "jest",
+        "check:updates": "npx npm-check-updates"
     },
     "dependencies": {
         "@ant-design/icons": "^4.7.0",
-        "@ant-design/pro-layout": "^6.26.6",
-        "@weblif/fast-ui": "^0.2.8-canary",
-        "@weblif/react-top-loading-bar": "^2.0.1",
-        "axios": "^0.26.1",
+        "@ant-design/pro-layout": "^6.37.0",
+        "@weblif/fast-ui": "^0.8.0-canary",
+        "@weblif/react-top-loading-bar": "^2.1.1",
+        "axios": "^0.27.2",
         "date-fns": "^2.28.0",
-        "dexie": "^3.0.3",
-        "pinyin": "^2.10.2",
-        "react": "^18.0.0",
-        "react-dom": "^18.0.0",
-        "react-router-dom": "^5.3.0"
+        "dexie": "^3.2.2",
+        "pinyin": "^2.11.2",
+        "react": "^18.1.0",
+        "react-dom": "^18.1.0",
+        "react-router-dom": "^6.3.0"
     },
     "devDependencies": {
         "@types/pinyin": "^2.10.0",
-        "@types/react": "^18.0.0",
-        "@types/react-dom": "^18.0.0",
-        "@types/react-router-dom": "^5.3.0",
+        "@types/react": "^18.0.8",
+        "@types/react-dom": "^18.0.3",
         "@weblif/configure": "^0.0.2",
-        "@weblif/fastpack": "^1.9.12-canary",
+        "@weblif/fastpack": "^1.11.1-canary",
         "@weblif/plugin-less-loader": "^2.3.9",
         "cross-env": "^7.0.3",
-        "eslint-webpack-plugin": "^3.0.1"
+        "eslint-webpack-plugin": "^3.1.1"
     }
 }

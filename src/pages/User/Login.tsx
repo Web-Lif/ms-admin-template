@@ -1,18 +1,16 @@
 import React, { useState,FC, useEffect } from 'react'
 import { Form, Input, Tabs, Button, Typography, Checkbox } from '@weblif/fast-ui'
-import { RouteComponentProps } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { checkLoginStatus } from '@/app'
 
 import styles from './styles/login.module.less'
 
-const Login: FC<RouteComponentProps> = ({
-    history
-}) => {
-    
+const Login: FC = () => {
+    const navigate = useNavigate()
     useEffect(() => {
         if (checkLoginStatus()) {
-            history.push('/')
+            navigate('/')
         }
     }, [])
 
@@ -22,7 +20,7 @@ const Login: FC<RouteComponentProps> = ({
         setLoading(true)
         localStorage.setItem('ms-token', JSON.stringify(values))
         setLoading(false)
-        history.push('/')
+        navigate('/')
     }
 
     return (
