@@ -1,4 +1,4 @@
-import React, { FC, useState, Suspense, useRef, useEffect, createRef, ReactElement } from 'react'
+import React, { FC, useState, Suspense, useRef, useEffect, createRef, ReactElement, ReactNode } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
 import { Space, Dropdown, Menu, Tabs, Select, Typography } from '@weblif/fast-ui'
@@ -115,7 +115,6 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
 
     const searchRef = useRef<BaseSelectRef>(null)
 
-
     const getSearchList = (menuDatas: MenuDataItem[]) => {
         const data:  MenuDataItem[] = []
         menuDatas.forEach((ele, index) => {
@@ -164,7 +163,6 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
     }, [tabs])
 
     useEffect(() => {
-        console.log(tabActiveKey)
         setConfigParams('ms-active-key', tabActiveKey)
     }, [tabActiveKey])
 
@@ -244,7 +242,6 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                         tab={tab.name}
                         key={tab.key || tab.path}
                         closable={tab.closable}
-                        forceRender
                     >
                         <Suspense fallback={<Loading />}>
                             <DynamicComponent
@@ -518,7 +515,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                         />
                     </Space>
                 )}
-                menuItemRender={(item, dom) => {
+                menuItemRender={(item: MenuDataItem, dom: ReactNode) => {
                     const { path } = item
                     if (path) {
                         if (config.tabs === 'single') {
