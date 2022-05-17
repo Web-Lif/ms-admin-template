@@ -103,7 +103,7 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
     const [tabActiveKey, setActiveKey] = useState<string>('/')
 
     useEffect(() => {
-        window.history.pushState({}, '',  `${tabActiveKey}`)
+        window.history.pushState({}, '',  `#${tabActiveKey}`)
     }, [tabActiveKey])
 
     const [reload, setReload] = useState<{
