@@ -9,12 +9,12 @@
         "build": "cross-env fastpack build",
         "lint:script": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
         "test": "jest",
-        "check:updates": "npx npm-check-updates"
+        "check:updates": "npx npm-check-updates -u"
     },
     "dependencies": {
         "@ant-design/icons": "^4.7.0",
-        "@ant-design/pro-layout": "^6.37.0",
-        "@weblif/fast-ui": "^0.8.0-canary",
+        "@ant-design/pro-layout": "^6.38.2",
+        "@weblif/fast-ui": "^0.13.0-canary",
         "@weblif/react-top-loading-bar": "^2.1.1",
         "axios": "^0.27.2",
         "date-fns": "^2.28.0",
@@ -26,8 +26,8 @@
     },
     "devDependencies": {
         "@types/pinyin": "^2.10.0",
-        "@types/react": "^18.0.8",
-        "@types/react-dom": "^18.0.3",
+        "@types/react": "^18.0.9",
+        "@types/react-dom": "^18.0.4",
         "@weblif/configure": "^0.0.2",
         "@weblif/fastpack": "^1.11.1-canary",
         "@weblif/plugin-less-loader": "^2.3.9",
