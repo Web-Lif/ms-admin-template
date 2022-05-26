@@ -5,6 +5,7 @@ import { Space, Dropdown, Menu, Tabs, Select, Typography } from '@weblif/fast-ui
 import { SettingOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined, BugOutlined } from '@ant-design/icons'
 import LoadingBar, { LoadingBarRef } from '@weblif/react-top-loading-bar'
 import pinyin from 'pinyin'
+import { BaseSelectRef } from 'rc-select'
 
 import { TabHooks, Tabs as TabsProps } from '@/types'
 import { setConfigParams, getConfigParams } from '@/utils/config'
@@ -12,7 +13,7 @@ import { Notification, NotFound, Loading } from '@/components'
 import { requestGlobalData, GlobalData, config, clearLoginStatus } from '../app'
 
 import styles from './styles/layout.module.less'
-import { BaseSelectRef } from 'rc-select'
+
 
 interface UserTopInfoProps {
     name: string
@@ -141,18 +142,6 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
             }
         })
 
-        const onKeyup = (e: KeyboardEvent) => {
-            if (e.key === '/') {
-                e.stopPropagation()
-                searchRef.current?.focus()
-            }
-        }
-
-        window.addEventListener('keyup', onKeyup)
-
-        return () => {
-            window.removeEventListener('keyup', onKeyup)
-        }
     }, [])
 
     useEffect(() => {
