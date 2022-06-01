@@ -228,9 +228,6 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
             
                 return (
                     <Tabs.TabPane
-                        style={{
-                            overflowX: 'hidden'
-                        }}
                         tab={tab.name}
                         key={tab.key || tab.path}
                         closable={tab.closable}
