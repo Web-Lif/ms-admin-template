@@ -1,3 +1,5 @@
-//! moment.js
-
-//! moment.js locale configuration
+/**
+ * @license qrcode.react
+ * Copyright (c) Paul O'Shannessy
+ * SPDX-License-Identifier: ISC
+ */
