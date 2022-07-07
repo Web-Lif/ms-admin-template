@@ -2,7 +2,8 @@ import React, { Suspense } from 'react'
 import { useLocation, Outlet, Navigate } from 'react-router-dom'
 import { requestIgnoreList, checkLoginStatus } from '../app'
 
-import '@weblif/fast-ui/es/app'
+import 'antd/dist/antd.variable.min.css'
+
 
 const BasicLayout = React.lazy(() => import(/* webpackPrefetch: true */ './BasicLayout'))
 
