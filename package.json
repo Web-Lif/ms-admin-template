@@ -13,7 +13,7 @@
     },
     "dependencies": {
         "@ant-design/icons": "4.7.0",
-        "@ant-design/pro-layout": "6.38.15",
+        "@ant-design/pro-layout": "6.38.16",
         "@weblif/fast-ui": "0.24.3",
         "@weblif/react-top-loading-bar": "2.1.2",
         "axios": "0.27.2",
