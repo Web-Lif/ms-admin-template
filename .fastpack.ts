@@ -25,7 +25,6 @@ export default getFastpackConfig({
         loading: '/components/Loading',
         layout: '/layouts'
     },
-    publicPath: '/ms-template',
     plugins: [
         new FastpackPluginLessLoader({}),
         new WebpackChainPlugin()
