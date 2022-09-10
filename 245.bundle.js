@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkms_template=self.webpackChunkms_template||[]).push([[245],{94918:(e,t,s)=>{s.r(t),s.d(t,{default:()=>c});var a=s(67294);const n="CnNzBxLqCuPsMQ2_z9Am";const c=function(){return a.createElement("div",{className:n})}}}]);
