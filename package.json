@@ -23,7 +23,7 @@
     },
     "devDependencies": {
         "@types/pinyin": "2.10.0",
-        "@types/react": "18.0.17",
+        "@types/react": "18.0.19",
         "@types/react-dom": "18.0.6",
         "@weblif/configure": "0.0.2",
         "@weblif/fastpack": "1.12.3-canary",
