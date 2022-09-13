@@ -1,5 +1,5 @@
 {
-    "name": "ms-template",
+    "name": "ms-admin-template",
     "private": true,
     "version": "0.0.1-canary",
     "license": "MIT",
@@ -8,8 +8,7 @@
         "start:frame": "cross-env MainFrame=true fastpack dev ",
         "build": "cross-env fastpack build",
         "lint:script": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
-        "test": "jest",
-        "preinstall": "npx npm-force-resolutions"
+        "test": "jest"
     },
     "dependencies": {
         "@ant-design/icons": "4.7.0",
@@ -25,13 +24,13 @@
         "@types/pinyin": "2.10.0",
         "@types/react": "18.0.19",
         "@types/react-dom": "18.0.6",
-        "@weblif/configure": "0.0.2",
+        "@weblif/configure": "0.1.1",
         "@weblif/fastpack": "1.13.0",
         "@weblif/plugin-less-loader": "2.3.9",
         "cross-env": "7.0.3",
         "eslint-webpack-plugin": "3.2.0"
     },
-    "resolutions": {
+    "overrides": {
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-router-dom": "6.3.0"
