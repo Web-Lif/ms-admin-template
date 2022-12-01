@@ -25,7 +25,7 @@
         "@types/react": "18.0.25",
         "@types/react-dom": "18.0.9",
         "@weblif/configure": "0.1.1",
-        "@weblif/fastpack": "1.14.2",
+        "@weblif/fastpack": "1.14.4",
         "@weblif/plugin-less-loader": "2.3.9",
         "cross-env": "7.0.3",
         "eslint-webpack-plugin": "3.2.0"
