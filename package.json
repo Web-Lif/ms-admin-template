@@ -16,7 +16,7 @@
         "@weblif/fast-ui": "0.29.8",
         "@weblif/react-top-loading-bar": "2.1.2",
         "axios": "1.2.2",
-        "dayjs": "1.11.6",
+        "dayjs": "1.11.7",
         "dexie": "3.2.2",
         "pinyin": "2.11.2"
     },
