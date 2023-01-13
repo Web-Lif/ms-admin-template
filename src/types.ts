@@ -1,3 +1,4 @@
+import { MutableRefObject } from 'react'
 import { MenuDataItem } from '@ant-design/pro-layout'
 import { RouterProps } from 'react-router-dom'
 
@@ -57,7 +58,7 @@ export interface Tabs {
     /**
      * 一些hook
      */
-    hooks: React.MutableRefObject<TabHooks>
+    hooks: MutableRefObject<TabHooks>
 }
 
 export interface RouteComponentProps extends RouterProps {
