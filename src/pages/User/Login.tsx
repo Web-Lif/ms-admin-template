@@ -25,7 +25,7 @@ const Login: FC = () => {
     return (
         <div
             css={css`
-                background-image: url(/assets/svg/LoginBackground.svg);
+                background-image: url(/svg/LoginBackground.svg);
                 background-repeat: no-repeat;
                 background-position: center 110px;
                 background-size: 100%;
