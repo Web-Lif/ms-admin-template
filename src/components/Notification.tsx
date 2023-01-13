@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Dropdown, Menu, Badge, Tabs } from '@weblif/fast-ui'
+import { Dropdown, Badge, Tabs } from '@weblif/fast-ui'
 import { BellOutlined } from '@ant-design/icons'
 import { css, ClassNames } from '@emotion/react'
 
@@ -7,31 +7,29 @@ interface NotificationProps {
     count: number
 }
 
-const NotificationTabsCSS = css`
-    height: 300px;
-    padding: .5em;
-`
 
 const NotificationBody = () => (
     <>
         <Tabs
             centered
-        >
-            <Tabs.TabPane
-                tab="消息(4)"
-                key="message"
-                css={NotificationTabsCSS}
-            >
-                消息内容
-            </Tabs.TabPane>
-            <Tabs.TabPane
-                tab="代办(10)"
-                key="task"
-                css={NotificationTabsCSS}
-            >
-                代办内容
-            </Tabs.TabPane>
-        </Tabs>
+            items={[{
+                key: 'message',
+                label: '"消息(4)',
+                children: (
+                    <>
+                        消息内容
+                    </>
+                )
+            },{
+                key: 'task',
+                label: '"代办(10)',
+                children: (
+                    <>
+                        代办内容
+                    </>
+                )
+            }]}
+        />
         <div
             css={css`
                 > div {
@@ -60,23 +58,18 @@ const NotificationBody = () => (
 const Notification: FC<NotificationProps> = ({
     count
 }) => {
-    const overlay = (
-        <Menu>
-            <NotificationBody />
-        </Menu>
-    )
 
     return (
         <ClassNames>
             {({ css: ncss }) => (
                 <Dropdown
                     trigger={['click']}
-                    overlay={overlay}
                     placement="bottomLeft"
                     overlayClassName={ncss`
                         width: 336px;
                         height: 500px;
                     `}
+                    dropdownRender={() => <NotificationBody />}
                 >
                     <div
                         css={css`

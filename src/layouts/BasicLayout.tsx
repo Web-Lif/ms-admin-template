@@ -1,12 +1,14 @@
 import { FC, useState, Suspense, useRef, useEffect, createRef, ReactElement, ReactNode } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import ProLayout, { MenuDataItem } from '@ant-design/pro-layout'
-import { Space, Dropdown, Menu, Tabs, Select, Typography } from '@weblif/fast-ui'
+import { Space, Dropdown, Tabs, Select, Typography } from '@weblif/fast-ui'
 import { SettingOutlined, SyncOutlined, ScissorOutlined, CloseCircleOutlined, SearchOutlined, BugOutlined } from '@ant-design/icons'
 import LoadingBar, { LoadingBarRef } from '@weblif/react-top-loading-bar'
 import pinyin from 'pinyin'
 import { BaseSelectRef } from 'rc-select'
 import { css } from '@emotion/react'
+import type { TabsProps as RCTabsProps } from 'antd'
+
 
 import { TabHooks, Tabs as TabsProps } from '@/types'
 import { setConfigParams, getConfigParams } from '@/utils/config'
@@ -22,25 +24,17 @@ const UserTopInfo: FC<UserTopInfoProps> = ({
     name,
 }) => (
     <Dropdown
-        overlay={(
-            <Menu>
-                <Menu.Item
-                    key="logout"
-                    icon={ <SettingOutlined />}
-                >
-                    <div
-                        role="button"
-                        aria-hidden="true"
-                        onClick={() => {
-                            clearLoginStatus()
-                            window.location.href = '/User/Login'
-                        }}
-                    >
-                        退出登录
-                    </div>
-                </Menu.Item>
-            </Menu>
-        )}
+        menu={{
+            items: [{
+                key: 'logout',
+                icon: <SettingOutlined />,
+                label: '退出登录',
+                onClick: () => {
+                    clearLoginStatus()
+                    window.location.href = '/User/Login'
+                }
+            }]
+        }}
     >
         <div
             css={css`
@@ -233,12 +227,12 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                     hook,
                 })
             
-                return (
-                    <Tabs.TabPane
-                        tab={tab.name}
-                        key={tab.key || tab.path}
-                        closable={tab.closable}
-                    >
+                return {
+                    tab: tab.name,
+                    key: tab.key || tab.path,
+                    label: tab.name,
+                    closable: tab.closable as boolean ,
+                    children: (
                         <Suspense fallback={<Loading />}>
                             <DynamicComponent
                                 key={reload?.key === key ? reload.count : undefined}
@@ -249,9 +243,12 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                                 }}
                             />
                         </Suspense>
-                    </Tabs.TabPane>
-                )
-            })
+                    ) 
+                }
+
+            }) as RCTabsProps['items']
+            
+           
             return (
                 <Tabs
                     css={css`
@@ -269,9 +266,8 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                     `}
                     renderTabBar={() => <div />}
                     activeKey={tabActiveKey}
-                >
-                    {renderBodyTabPane()}
-                </Tabs>
+                    items={renderBodyTabPane()}
+                />
             )
         }
         return children
@@ -322,78 +318,69 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
         if (isMultiTabs()) {
             const renderDropdownNode = (node: ReactElement) => (
                 <Dropdown
-                    overlay={(
-                        <Menu>
-                            <Menu.Item
-                                key="reload"
-                                icon={<SyncOutlined />}
-                                onClick={() => {
-                                    loadingRef.current?.continuousStart()
-                                    let number = 0
-                                    if (reload?.key === node.key) {
-                                        number += (reload?.count || 0) + 1
+                    menu={{
+                        items: [{
+                            label: '重新加载',
+                            key: 'reload',
+                            icon: <SyncOutlined />,
+                            onClick: () => {
+                                loadingRef.current?.continuousStart()
+                                let number = 0
+                                if (reload?.key === node.key) {
+                                    number += (reload?.count || 0) + 1
+                                }
+                                setReload({
+                                    key: node.key?.toString() || '',
+                                    count: number
+                                })
+                                setTimeout(() => {
+                                    loadingRef.current?.complete()
+                                }, 0)
+                            }
+                        }, {
+                            label: '关闭其他标签页',
+                            key: 'closeOther',
+                            icon: <CloseCircleOutlined />,
+                            onClick: () => {
+                                const newTabs = tabs.filter(ele => {
+                                    const key = (ele.key || ele.path) || ''
+                                    if (['/', node.key].includes(key)) {
+                                        return true
                                     }
-                                    setReload({
-                                        key: node.key?.toString() || '',
-                                        count: number
-                                    })
-                                    setTimeout(() => {
-                                        loadingRef.current?.complete()
-                                    }, 0)
-                                }}
-                            >
-                                重新加载
-                            </Menu.Item>
-                            <Menu.Item
-                                key="closeOther"
-                                icon={<CloseCircleOutlined />}
-                                onClick={() => {
-                                    const newTabs = tabs.filter(ele => {
-                                        const key = (ele.key || ele.path) || ''
-                                        if (['/', node.key].includes(key)) {
-                                            return true
-                                        }
-                                        return false
-                                    })
-                                    delTab(newTabs, node.key?.toString() || '')
-                                }}
-                            >
-                                关闭其他标签页
-                            </Menu.Item>
-                            <Menu.Item
-                                key="closeRight"
-                                icon={<ScissorOutlined />}
-                                onClick={() => {
-                                    const index = findCurrentTabIndex(tabs, node.key?.toString() || '')
-                                    const newTabs = tabs.slice(0, index + 1)
-                                    delTab(newTabs, node.key?.toString() || '')
-                                }}
-                            >
-                                关闭右侧标签页
-                            </Menu.Item>
-                            <Menu.Item
-                                key="closeForce"
-                                icon={<BugOutlined />}
-                                onClick={() => {
-                                    const index = findCurrentTabIndex(tabs, node.key?.toString() || '')
-                                    if (index !== -1) {
-                                        tabs.splice(index, 1)
-                                        setTabs([
-                                            ...tabs
-                                        ])
-                                        let nextActiveKey
-                                        if (tabs.length > 0) {
-                                            const tab = tabs[tabs.length - 1]
-                                            nextActiveKey = tab.key || tab.path 
-                                        }
-                                        setActiveKey(nextActiveKey || '/')
+                                    return false
+                                })
+                                delTab(newTabs, node.key?.toString() || '')
+                            }
+                        }, {
+                            label: '关闭右侧标签页',
+                            key: 'closeRight',
+                            icon: <ScissorOutlined />,
+                            onClick: () => {
+                                const index = findCurrentTabIndex(tabs, node.key?.toString() || '')
+                                const newTabs = tabs.slice(0, index + 1)
+                                delTab(newTabs, node.key?.toString() || '')
+                            }
+                        }, {
+                            label: '强制关闭标签',
+                            key: 'closeForce',
+                            icon: <BugOutlined />,
+                            onClick: () => {
+                                const index = findCurrentTabIndex(tabs, node.key?.toString() || '')
+                                if (index !== -1) {
+                                    tabs.splice(index, 1)
+                                    setTabs([
+                                        ...tabs
+                                    ])
+                                    let nextActiveKey
+                                    if (tabs.length > 0) {
+                                        const tab = tabs[tabs.length - 1]
+                                        nextActiveKey = tab.key || tab.path 
                                     }
-                                }}
-                            >
-                                强制关闭标签
-                            </Menu.Item>
-                        </Menu>
-                    )}
+                                    setActiveKey(nextActiveKey || '/')
+                                }
+                            }
+                        }]
+                    }}
                     trigger={['contextMenu']}
                 >
                     {node}
@@ -445,11 +432,12 @@ const BasicLayout: FC<BasicLayoutProps> = ({ children }) => {
                         setTabs([...tabs])
                         setActiveKey(key)
                     }}
-                >
-                    {tabs.map(tab => (
-                        <Tabs.TabPane tab={tab.name} key={tab.key || tab.path} closable={tab.closable} />
-                    ))}
-                </Tabs>
+                    items={tabs.map(tab => ({
+                        key: tab.key || tab.path,
+                        label: tab.name,
+                        closable: tab.closable
+                    })) as RCTabsProps['items']}
+                />
             )
         }
         return null
