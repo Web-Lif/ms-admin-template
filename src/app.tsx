@@ -72,9 +72,7 @@ export type Config = {
     // 菜单的布局方式
     layout: 'side' | 'top'| 'mix'
     // 导航的主题，side 和 mix 模式下是左侧菜单的主题，top 模式下是顶部菜单
-    navTheme: 'light' | 'dark'
-    // 顶部导航的主题，mix 模式生效
-    headerTheme: 'light' | 'dark'
+    navTheme: 'light' | 'realDark'
     // 标签页模式 
     tabs: 'single' | 'multi'
     // 主题的 Log
@@ -82,9 +80,8 @@ export type Config = {
 }
 
 export const config: Config = {
-    layout: 'side',
-    navTheme: 'dark',
-    headerTheme: 'dark',
+    layout: 'mix',
+    navTheme: 'light',
     tabs: 'multi',
     logo: 'https://avatars.githubusercontent.com/u/91562499?s=200&v=4'
 }

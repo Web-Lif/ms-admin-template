@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import LoadingBar, { LoadingBarRef } from '@weblif/react-top-loading-bar'
 
 const Loading = () => {
