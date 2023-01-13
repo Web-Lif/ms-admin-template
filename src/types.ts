@@ -1,6 +1,5 @@
 import { MenuDataItem } from '@ant-design/pro-layout'
-import React from 'react'
-import { RouteComponentProps as RouterProps } from 'react-router-dom'
+import { RouterProps } from 'react-router-dom'
 
 export interface TabHooks {
     onBeforeCloseTab?: () => void | boolean | Promise<void | boolean>

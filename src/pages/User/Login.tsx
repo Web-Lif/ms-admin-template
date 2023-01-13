@@ -1,10 +1,9 @@
-import React, { useState,FC, useEffect } from 'react'
+import { useState,FC, useEffect } from 'react'
 import { Form, Input, Tabs, Button, Typography, Checkbox } from '@weblif/fast-ui'
 import { useNavigate } from 'react-router-dom'
+import { css } from '@emotion/react'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { checkLoginStatus } from '@/app'
-
-import styles from './styles/login.module.less'
 
 const Login: FC = () => {
     const navigate = useNavigate()
@@ -25,18 +24,45 @@ const Login: FC = () => {
 
     return (
         <div
-            className={styles.login}
+            css={css`
+                background-image: url(./assets/svg/LoginBackground.svg);
+                background-repeat: no-repeat;
+                background-position: center 110px;
+                background-size: 100%;
+                width: 100%;
+                height: 100%;
+                padding-top: 4rem;
+            `}
         >
-            <div className={styles.main}>
-                <div className={styles.top}>
+            <div
+                css={css`
+                    width: 328px;
+                    margin: 0 auto;
+                    border: 1px solid #f0f2f5;
+                    padding: 1rem;
+                `}
+            >
+                <div
+                    css={css`
+                        padding-top: 1.2rem;
+                        padding-bottom: 1.2rem;
+                        text-align: center;
+                    `}
+                >
                     <Typography.Title level={3}>MS Template</Typography.Title>
                     <Typography.Text type="secondary">
                         立志打造成为湖北潜江具有影响力的模板
                     </Typography.Text>
                 </div>
                 <Tabs
+                    css={css`
+                        .ant-tabs-nav {
+                            &::before {
+                                display: none;
+                            }
+                        }
+                    `}
                     defaultActiveKey="password"
-                    className={styles.mainTabs}
                     centered
                 >
                     <Tabs.TabPane tab="账号密码登录" key="password">

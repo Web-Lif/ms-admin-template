@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { Button, message } from '@weblif/fast-ui'
 import { RouteComponentProps } from '@/types'
 

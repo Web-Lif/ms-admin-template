@@ -1,11 +1,10 @@
-import React, { Suspense } from 'react'
+import { Suspense, lazy } from 'react'
+import { css, Global } from '@emotion/react'
 import { useLocation, Outlet, Navigate } from 'react-router-dom'
 import { requestIgnoreList, checkLoginStatus } from '../app'
 
-import 'antd/dist/antd.variable.min.css'
 
-
-const BasicLayout = React.lazy(() => import(/* webpackPrefetch: true */ './BasicLayout'))
+const BasicLayout = lazy(() => import(/* webpackPrefetch: true */ './BasicLayout'))
 
 export const useIgnoreLayout = () => {
     const location = useLocation()
@@ -19,23 +18,40 @@ export const useIgnoreLayout = () => {
 
 const Layout = () => {
 
+    let outlet = null
+
     if (useIgnoreLayout()) {
-        return (
+        outlet =  (
             <>
                 <Outlet />
             </>
         )
-    }
-
-    if (!checkLoginStatus()) {
-        return <Navigate to="/User/Login" replace />
+    } else if (checkLoginStatus() === false) {
+        outlet = <Navigate to="/User/Login" replace />
+    } else {
+        outlet = (
+            <BasicLayout>
+                <Outlet />
+            </BasicLayout>
+        )
     }
 
     return (
         <Suspense fallback={<div />}>
-            <BasicLayout>
-                <Outlet />
-            </BasicLayout>
+            <Global
+                styles={css`
+                    html, body {
+                        height: 100%;
+                        margin: 0px;
+                        background-color: #f0f2f5;
+                    }
+                    .ant-pro {
+                        height: 100%;
+                    }
+
+                `}
+            />  
+            {outlet}
         </Suspense>
     )
 }
