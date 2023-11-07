@@ -21,7 +21,7 @@
         "pinyin": "2.11.2"
     },
     "devDependencies": {
-        "@types/pinyin": "2.10.0",
+        "@types/pinyin": "2.10.2",
         "@types/react": "18.0.27",
         "@types/react-dom": "18.0.10",
         "@weblif/configure": "0.1.2",
