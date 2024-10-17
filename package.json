@@ -11,7 +11,7 @@
         "test": "jest"
     },
     "dependencies": {
-        "@ant-design/pro-layout": "7.6.1",
+        "@ant-design/pro-layout": "7.20.2",
         "@emotion/react": "11.10.5",
         "@weblif/fast-ui": "0.30.3",
         "@weblif/react-top-loading-bar": "2.1.2",
