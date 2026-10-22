@@ -27,7 +27,7 @@
         "@weblif/configure": "0.1.2",
         "@weblif/fastpack": "1.14.4",
         "cross-env": "7.0.3",
-        "eslint-webpack-plugin": "4.0.0"
+        "eslint-webpack-plugin": "4.2.0"
     },
     "overrides": {
         "antd": "5.1.2",
